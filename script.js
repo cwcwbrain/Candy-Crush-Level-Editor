@@ -356,7 +356,7 @@ function exportLevelUI(){
         level['moveLimit'] = moves
     }
 
-    if (mode === "Drop down"){
+    if (currentMode === "Drop down"){
         let cherries = document.getElementById("cherries").value
         if (cherries === ''){
             cherries = 20
