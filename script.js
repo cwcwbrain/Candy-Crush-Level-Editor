@@ -359,7 +359,7 @@ function exportLevelUI(){
     if (currentMode === "Drop down"){
         let cherries = document.getElementById("cherries").value
         if (cherries === ''){
-            cherries = 20
+            cherries = 0
         }
         else{
             cherries = Number(cherries)
@@ -367,13 +367,13 @@ function exportLevelUI(){
 
         let hazelnuts = document.getElementById("hazelnuts").value
         if (hazelnuts === ''){
-            hazelnuts = 20
+            hazelnuts = 0
         }
         else{
             hazelnuts = Number(hazelnuts)
         }
 
-        level['ingredients'] = [cherries, hazelnuts]
+        level['ingredients'] = [hazelnuts, cherries]
         level['numIngredientsOnScreen'] = 1
         level['ingredientSpawnDensity'] = 0
         level['maxNumIngredientsOnScreen'] = 1
