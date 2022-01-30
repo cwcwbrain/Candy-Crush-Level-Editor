@@ -70,7 +70,7 @@ table, td, tr {
 .buttons .dropdown{
     padding: 0;
     width: 100%;
-    height: 100%;
+    height: 45px;
     background-color: #545454;
     border: 2px solid;
     color: white;
