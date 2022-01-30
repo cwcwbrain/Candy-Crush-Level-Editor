@@ -1,0 +1,269 @@
+<html>
+    <!-- Download stuff -->
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Level Editor</title>
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <script src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
+    </head>
+
+    <body>
+        <script src="script.js" defer></script>
+
+        <img src="backgrounds/w1_bg.webp" id="background" draggable="false"></img>
+
+        <div id="main">
+            <div class="sideselectionright">
+                <div class="sidetitle">
+                    <p class='MergePro' style="font-weight: bold; color: white; text-align: center;">Level:</p>
+                </div>
+                <div class="sideoptions">
+                    <!-- <p class='DroidSans break' style="margin: auto; display: block; color: white; text-align: center;">Data</p> -->
+                    <button style="margin: auto; display: block;" onclick="exportLevelUI()">Export Level</button>
+                    <button style="margin: auto; display: block;" disabled>Import Level</button>
+                </div>
+                <div class="sideoptions">
+                    <p for="moves" class='DroidSans break' style="margin: 10px; display: block; color: white; text-align: center;">Level Type:</p>
+                    <label for="movesoption" class="leveltypelabel" style="margin: 5px;" onclick="selectMode()">
+                        <img src="ui/playmode_icon_moves.png" style="max-width: 30px; max-height: 30px;">
+                        <div class="break"></div>
+                        <label class='DroidSans' style="color: white; text-align: center;">Moves</label>
+                        <input type="radio" id="movesoption" name="leveltype" value="Classic moves" checked>
+                    </label>
+                    <label class="leveltypelabel" for="jellyoption" style="margin: 5px;" onclick="selectMode()">
+                        <img src="ui/playmode_icon_jelly.png" style="max-width: 30px; max-height: 30px;">
+                        <div class="break"></div>
+                        <label class='DroidSans' style="color: white; text-align: center;">Jelly</label>
+                        <input type="radio" id="jellyoption" name="leveltype" value="Light up">
+                    </label>
+                    <label class="leveltypelabel" for="ingredientsoption" style="margin: 5px;" onclick="selectMode()">
+                        <img src="ui/playmode_icon_drop.png" style="max-width: 30px; max-height: 30px;">
+                        <div class="break"></div>
+                        <label class='DroidSans' style="color: white; text-align: center;">Ingredients</label>
+                        <input type="radio" id="ingredientsoption" name="leveltype" value="Drop down">
+                    </label>
+                    <label class="leveltypelabel" for="timedoption" style="margin: 5px;" onclick="selectMode()">
+                        <img src="ui/playmode_icon_time.png" style="max-width: 30px; max-height: 30px;">
+                        <div class="break"></div>
+                        <label class='DroidSans' style="color: white; text-align: center;">Timed</label>
+                        <input type="radio" id="timedoption" name="leveltype" value="Classic">
+                    </label>
+                </div>
+                <div class="sideoptions" id="moves-section">
+                    <label for="moves" class='DroidSans' style="margin: 10px; display: block; color: white; text-align: center;">Moves:</label>
+                    <input style="width: 50px; text-align: center;" placeholder="20" type="number" name="moves" id="moves" name="moves"><br>
+                </div>
+                <div class="sideoptions" id="time-section" style="display: none;">
+                    <label for="time" class='DroidSans' style="margin: 10px; display: block; color: white; text-align: center;">Time (seconds):</label>
+                    <input style="width: 50px; text-align: center;" placeholder="30" type="number" name="moves" id="time" name="time"><br>
+                </div>
+                <div class="sideoptions">
+                    <p class='DroidSans break' style="margin: auto; display: block; color: white; text-align: center;">Preferred Colors:</p>
+                    <button value="0" class="preferred preferredselected" onclick="togglePreferred(this)">
+                        <img class="selectionimage" src="elements/blue.png">
+                    </button>
+                    <button value="1" class="preferred preferredselected" onclick="togglePreferred(this)">
+                        <img class="selectionimage" src="elements/green.png">
+                    </button>
+                    <button value="2" class="preferred preferredselected" onclick="togglePreferred(this)">
+                        <img class="selectionimage" src="elements/orange.png">
+                    </button>
+                    <button value="3" class="preferred preferredselected" onclick="togglePreferred(this)">
+                        <img class="selectionimage" src="elements/purple.png">
+                    </button>
+                    <button value="4" class="preferred preferredselected" onclick="togglePreferred(this)">
+                        <img class="selectionimage" src="elements/red.png">
+                    </button>
+                    <button value="5" class="preferred preferredselected" onclick="togglePreferred(this)">
+                        <img class="selectionimage" src="elements/yellow.png">
+                    </button>
+                </div>
+                <div id="ingredients-options-section" style="display: none;">
+                    <div class="sidetitle">
+                        <p class='MergePro' style="font-weight: bold; color: white; text-align: center;">Ingredients:</p>
+                    </div>
+                    <div class="sideoptions">
+                        <img src="elements/cherry.png" style="max-width: 30px; max-height: 30px;">
+                        <label for="cherries" class='DroidSans' style="margin: 10px; display: block; color: white; text-align: center;">Cherries Required:</label>
+                        <input style="width: 50px; text-align: center;" placeholder="0" type="number" name="cherries" id="cherries" name="cherries">
+                        <div class="break"></div>
+                        <img src="elements/hazelnut.png" style="max-width: 30px; max-height: 30px;">
+                        <label for="hazelnuts" class='DroidSans' style="margin: 10px; display: block; color: white; text-align: center;">Hazelnuts Required:</label>
+                        <input style="width: 50px; text-align: center;" placeholder="0" type="number" name="hazelnuts" id="hazelnuts" name="hazelnuts">
+                    </div>
+                </div>
+            </div>
+
+            <div class="sideselection">
+                <div class="buttons">
+                    <button class="dropdown" onclick="toggleDropdown(this)" associd="colordrop">
+                        <div style="display: flex; justify-content: space-between;">
+                            <p class='MergePro' style="padding-left: 5%; ">Colors</p>
+                            <p class="arrow" style="display: inline; padding-right: 5%; transform: rotate(90deg);">&raquo</p>
+                          </div>
+                    </button>
+                    <div class="dropped" id="colordrop" style="display:none">
+                        <button class="colorselected" onclick="updateColor(this, 'random')">
+                            <img class="selectionimage" src="elements/random_ui.png">
+                        </button>
+                        <div class="selectcolor" color="red"></div>
+                        <div class="selectcolor" color="yellow"></div>
+                        <div class="selectcolor" color="blue"></div>
+                        <div class="selectcolor" color="green"></div>
+                        <div class="selectcolor" color="orange"></div>
+                        <div class="selectcolor" color="purple"></div>
+                    </div>
+
+                    <button class="dropdown" onclick="toggleDropdown(this)" associd="candy">
+                        <div style="display: flex; justify-content: space-between;">
+                            <p class='MergePro' style="padding-left: 5%; ">Candy</p>
+                            <p class="arrow" style="display: inline; padding-right: 5%; transform: rotate(90deg);">&raquo</p>
+                          </div>
+                    </button>
+                    <div class="dropped" id="candy" style="display:none">
+                        <button class="elementselected" onclick="updateSelection(this, 'random', 'normal')">
+                            <img class="selectionimage" src="elements/random.png">
+                        </button>
+                        <div class="selectcoloredelement" element="striped_horizontal"></div>
+                        <div class="selectcoloredelement" element="striped_vertical"></div>
+                        <div class="selectcoloredelement" element="wrapped"></div>
+                        <div class="selectcoloredelement" element="pepper_candy"></div>
+                        <div class="selectcoloredelement" element="key"></div>
+                        <div class="selectcoloredelement" element="lucky"></div>
+                        <div class="selectcoloredelement" element="jellyfish"></div>
+                        <div class="selectcoloredelement" element="jellyfish_striped"></div>
+                        <div class="selectcoloredelement" element="jellyfish_wrapped"></div>
+                        <div class="selectcoloredelement" element="jellyfish_colorbomb"></div>
+                        <div class="selectelement" element="bomb", gamelayer="normal"></div>
+                        <div class="selectelement" element="coconut_wheel", gamelayer="normal"></div>
+                        <div class="selectelement" element="ufo", gamelayer="normal"></div>
+                    </div>
+
+                    <button class="dropdown" onclick="toggleDropdown(this)" associd="tiles">
+                        <div style="display: flex; justify-content: space-between;">
+                            <p class='MergePro' style="padding-left: 5%; ">Tiles</p>
+                            <p class="arrow" style="display: inline; padding-right: 5%; transform: rotate(90deg);">&raquo</p>
+                          </div>
+                    </button>
+                    <div class="dropped" id="tiles" style="display:none">
+                        <button onclick="updateSelection(this, 'none', 'tile')">
+                            <img class="selectionimage" src="elements/none_UI.png">
+                        </button>
+                        <button onclick="updateSelection(this, 'empty', 'tile')">
+                            <img class="selectionimage" src="elements/empty_UI.png">
+                        </button>
+                        <div class="selectelement" element="grid" gamelayer="tile"></div>
+                        <div class="selectelement" element="jelly" gamelayer="tile"></div>
+                        <div class="selectelement" element="jelly2" gamelayer="tile"></div>
+                    </div>
+
+                    <button class="dropdown" onclick="toggleDropdown(this)" associd="blockers">
+                        <div style="display: flex; justify-content: space-between;">
+                            <p class='MergePro' style="padding-left: 5%; ">Blockers</p>
+                            <p class="arrow" style="display: inline; padding-right: 5%; transform: rotate(90deg);">&raquo</p>
+                          </div>
+                    </button>
+                    <div class="dropped" id="blockers" style="display:none">
+                        <div class="selectelement" element="chocolate" gamelayer="normal"></div>
+                        <div class="selectelement" element="licorice_square" gamelayer="normal"></div>
+                        <div class="selectelement" element="glass_tile_1" gamelayer="glass"></div>
+                        <div class="selectelement" element="glass_tile_2" gamelayer="glass"></div>
+                        <div class="selectelement" element="glass_tile_3" gamelayer="glass"></div>
+                        <div class="selectelement" element="block_multi_frosting1" gamelayer="normal"></div>
+                        <div class="selectelement" element="block_multi_frosting2" gamelayer="normal"></div>
+                        <div class="selectelement" element="block_multi_frosting3" gamelayer="normal"></div>
+                        <div class="selectelement" element="block_multi_frosting4" gamelayer="normal"></div>
+                        <div class="selectelement" element="block_multi_frosting5" gamelayer="normal"></div>
+                        <div class="selectelement" element="bubble_pop_1" gamelayer="normal"></div>
+                        <div class="selectelement" element="bubble_pop_2" gamelayer="normal"></div>
+                        <div class="selectelement" element="bubble_pop_3" gamelayer="normal"></div>
+                        <div class="selectelement" element="bubble_pop_4" gamelayer="normal"></div>
+                        <div class="selectelement" element="bubble_pop_5" gamelayer="normal"></div>
+                        <div class="selectelement" element="block_waffle1" gamelayer="normal"></div>
+                        <div class="selectelement" element="block_waffle2" gamelayer="normal"></div>
+                        <div class="selectelement" element="block_waffle3" gamelayer="normal"></div>
+                        <div class="selectelement" element="block_waffle4" gamelayer="normal"></div>
+                        <div class="selectelement" element="block_waffle5" gamelayer="normal"></div>
+                        <div class="selectelement" element="chain_layer1_c" gamelayer="normal"></div>
+                        <div class="selectelement" element="chain_layer2_c" gamelayer="normal"></div>
+                        <div class="selectelement" element="chain_layer3_c" gamelayer="normal"></div>
+                        <div class="selectelement" element="chain_layer4_c" gamelayer="normal"></div>
+                        <div class="selectelement" element="chain_layer5_c" gamelayer="normal"></div>
+                        <div class="selectelement" element="dark_chocolate_1" gamelayer="normal"></div>
+                        <div class="selectelement" element="dark_chocolate_2" gamelayer="normal"></div>
+                        <div class="selectelement" element="dark_chocolate_3" gamelayer="normal"></div>
+                        <div class="selectelement" element="dark_chocolate_4" gamelayer="normal"></div>
+                        <div class="selectelement" element="dark_chocolate_5" gamelayer="normal"></div>
+                        <div class="selectelement" element="shell_1" gamelayer="normal"></div>
+                        <div class="selectelement" element="shell_2" gamelayer="normal"></div>
+                        <div class="selectelement" element="shell_3" gamelayer="normal"></div>
+                        <div class="selectelement" element="jelly_jar_1" gamelayer="normal"></div>
+                        <div class="selectelement" element="jelly_jar_2" gamelayer="normal"></div>
+                        <!-- <div class="selectelement" element="horizontal" gamelayer="fence_down"></div> -->
+                    </div>
+
+                    <button class="dropdown" onclick="toggleDropdown(this)" associd="locks">
+                        <div style="display: flex; justify-content: space-between;">
+                            <p class='MergePro' style="padding-left: 5%; ">Locks</p>
+                            <p class="arrow" style="display: inline; padding-right: 5%; transform: rotate(90deg);">&raquo</p>
+                          </div>
+                    </button>
+                    <div class="dropped" id="locks" style="display:none">
+                        <div class="selectelement" element="licorice" gamelayer="overlay_blocker"></div>
+                        <div class="selectelement" element="marmalade" gamelayer="overlay_blocker"></div>
+                        <div class="selectelement" element="sugarcoat_1" gamelayer="sugarcoat"></div>
+                        <div class="selectelement" element="sugarcoat_2" gamelayer="sugarcoat"></div>
+                        <div class="selectelement" element="sugarcoat_3" gamelayer="sugarcoat"></div>
+                    </div>
+
+                    <button class="dropdown" onclick="toggleDropdown(this)" associd="spawning">
+                        <div style="display: flex; justify-content: space-between;">
+                            <p class='MergePro' style="padding-left: 5%; ">Candy Spawning</p>
+                            <p class="arrow" style="display: inline; padding-right: 5%; transform: rotate(90deg);">&raquo</p>
+                          </div>
+                    </button>
+                    <div class="dropped" id="spawning" style="display:none">
+                        <div class="selectelement" element="candy_entrance" gamelayer="candy_entrance"></div>
+                    </div>
+
+                    <button class="dropdown" onclick="toggleDropdown(this)" associd="ingredients">
+                        <div style="display: flex; justify-content: space-between;">
+                            <p class='MergePro' style="padding-left: 5%; ">Ingredients</p>
+                            <p class="arrow" style="display: inline; padding-right: 5%; transform: rotate(90deg);">&raquo</p>
+                          </div>
+                    </button>
+                    <div class="dropped" id="ingredients" style="display:none">
+                        <div class="selectelement" element="cherry" gamelayer="normal"></div>
+                        <div class="selectelement" element="hazelnut" gamelayer="normal"></div>
+                        <div class="selectelement" element="ingredients_exit" gamelayer="ingredients_exit"></div>
+                    </div>
+
+                    <button class="dropdown" onclick="toggleDropdown(this)" associd="mixers">
+                        <div style="display: flex; justify-content: space-between;">
+                            <p class='MergePro' style="padding-left: 5%; ">Mixers</p>
+                            <p class="arrow" style="display: inline; padding-right: 5%; transform: rotate(90deg);">&raquo</p>
+                          </div>
+                    </button>
+                    <div class="dropped" id="mixers" style="display:none">
+                        <div class="selectelement" element="chocolate_spawner" gamelayer="normal"></div>
+                        <div class="selectelement" element="dark_chocolate_spawner_1" gamelayer="normal"></div>
+                        <div class="selectelement" element="dark_chocolate_spawner_2" gamelayer="normal"></div>
+                        <div class="selectelement" element="dark_chocolate_spawner_3" gamelayer="normal"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vertical-center" width="100px">
+                <table id="level" cellspacing="0" class=""></table>
+            </div>
+        </div>
+
+        <div id="exportmenu" style="display: none;">
+            <div class="popup">
+                <button onclick="document.getElementById('exportmenu').style.display = 'none'" style="position: absolute; right: 20; top: 20; border-radius: 10px; background-color: rgb(174, 174, 174); width: 30px; height: 30px">X</button>
+                <label for="exportfield" class='MergePro' style="margin: 0; width: 50%; height: 20px; border-radius: 10px; background-color: #353535; padding:0; display: block; color: white; text-align: center;">Exported Data:</label>
+                <textarea id="exportfield" name="exportfield" style="background-color: #464646; border: 2px solid #353535; width: 90%; height: 70%; resize: none; color: white;" readonly></textarea>
+            </div>
+        </div>
+    </body>
