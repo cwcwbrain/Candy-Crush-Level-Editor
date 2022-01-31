@@ -47,6 +47,12 @@
                         <label class='DroidSans' style="color: white; text-align: center;">Ingredients</label>
                         <input type="radio" id="ingredientsoption" name="leveltype" value="Drop down">
                     </label>
+                    <label class="leveltypelabel" for="orderoption" style="margin: 5px;" onclick="selectMode()">
+                        <img src="ui/playmode_icon_order.png" style="max-width: 30px; max-height: 30px;">
+                        <div class="break"></div>
+                        <label class='DroidSans' style="color: white; text-align: center;">Order</label>
+                        <input type="radio" id="orderoption" name="leveltype" value="Order">
+                    </label>
                     <label class="leveltypelabel" for="timedoption" style="margin: 5px;" onclick="selectMode()">
                         <img src="ui/playmode_icon_time.png" style="max-width: 30px; max-height: 30px;">
                         <div class="break"></div>
@@ -90,11 +96,24 @@
                     <div class="sideoptions">
                         <img src="elements/cherry.png" style="max-width: 30px; max-height: 30px;">
                         <label for="cherries" class='DroidSans' style="margin: 10px; display: block; color: white; text-align: center;">Cherries Required:</label>
-                        <input style="width: 50px; text-align: center;" placeholder="0" type="number" name="cherries" id="cherries" name="cherries">
+                        <input style="width: 50px; text-align: center;" placeholder="0" type="number" name="cherries" id="cherries">
                         <div class="break"></div>
                         <img src="elements/hazelnut.png" style="max-width: 30px; max-height: 30px;">
                         <label for="hazelnuts" class='DroidSans' style="margin: 10px; display: block; color: white; text-align: center;">Hazelnuts Required:</label>
-                        <input style="width: 50px; text-align: center;" placeholder="0" type="number" name="hazelnuts" id="hazelnuts" name="hazelnuts">
+                        <input style="width: 50px; text-align: center;" placeholder="0" type="number" name="hazelnuts" id="hazelnuts">
+                    </div>
+                </div>
+                <div id="requirements-options-section" style="display: none;">
+                    <div class="sidetitle">
+                        <p class='MergePro' style="font-weight: bold; color: white; text-align: center;">Requirements:</p>
+                    </div>
+                    <div class="sidetitle">
+                        <button style="margin-right: auto; margin-left: auto; display: block;" onclick="addRequirement()">Add Requirement</button>
+                    </div>
+                    <div style="min-height: 40px; display: none;" id="requirementwarning">
+                        <p class='DroidSans' style="font-weight: bold; color: red; text-align: center;">You can only have 3 requirements at a time.</p>
+                    </div>
+                    <div id="requirements">
                     </div>
                 </div>
             </div>

@@ -16,6 +16,8 @@ var selectedColor = "002"
 var selectedElement = "002"
 var elementLayer = "normal"
 
+const orderItems = {"1": "red", "2": "blue", "3": "yellow", "4": "orange", "5": "purple", "6": "green", "7": "wrapped", "8": "striped", "9": "colorbomb", "10": "striped + striped", "11": "striped + wrapped", "12": "striped + colorbomb", "13": "colorbomb + colorbomb", "14": "wrapped + colorbomb", "15": "wrapped + wrapped", "16": "chocolate", "17": "frosting", "18": "licorice shell", "19": "licorice", "20": "pepper bomb", "21": "jellyfish", "22": "cake bomb", "24": "magic mixer", "25": "waffle", "26": "dark chocolate", "27": "candy cane curl", "28": "crystal candy", "29": "rainbow twist", "30": "frog", "31": "sugar coat", "32": "bubblegum", "33": "licorice curl", "34": "sour skull", "35": "bonbon blitz", "36": "jelly jar", "37": "candy cobra"}
+
 var currentMode = "Classic moves"
 
 //Order of the layers
@@ -43,6 +45,43 @@ function pickRandomProperty(obj) {
     return result;
 }
 
+function switchedRequirement(object){
+    document.getElementById("requirementwarning").style.display = "none"
+    let requirement = object.value
+    let image = object.parentNode.querySelector("img")
+    image.src = "ui/hud/" + orderItems[requirement] + ".png"
+}
+
+function removeRequirement(object){
+    object.parentNode.remove()
+    document.getElementById("requirementwarning").style.display = "none"
+}
+
+function addRequirement(){
+    let requirementsObj = document.getElementById("requirements")
+
+    if (requirementsObj.childNodes.length > 3){
+        document.getElementById("requirementwarning").style.display = "block"
+        return
+    }
+    else{
+        document.getElementById("requirementwarning").style.display = "none"
+    }
+    
+    section = document.createElement("div")
+    section.classList.add("sideoptions")
+    section.innerHTML = '<button style="left: 85%; border-radius: 10px; background-color: rgb(174, 174, 174); width: 30px; height: 30px" onclick="removeRequirement(this)">X</button> <p class="DroidSans break" style="font-weight: bold; color: white; text-align: center;">Requirement:</p> <img src="ui/hud/red.png" style="max-width: 30px; max-height: 30px;"> <p class="DroidSans" style="margin: 10px; display: block; color: white; text-align: center;">Order:</p> <select onchange="switchedRequirement(this)"> </select> <div class="break"></div> <img src="ui/btn_quit.png" style="max-width: 30px; max-height: 30px;"> <p class="DroidSans" style="margin: 10px; display: block; color: white; text-align: center;">Amount:</p> <input style="width: 50px; text-align: center;" placeholder="0" type="number">'
+
+    select = section.querySelector("select")
+    Object.keys(orderItems).forEach(function(key){
+        option = document.createElement("option")
+        option.value = key
+        option.innerHTML = orderItems[key]
+        select.appendChild(option)
+    })
+    requirementsObj.prepend(section)
+}
+
 function selectMode(){
     mode = document.querySelector('input[name="leveltype"]:checked').value
     if (mode === "Classic"){
@@ -59,6 +98,13 @@ function selectMode(){
     }
     else{
         document.getElementById("ingredients-options-section").style.display = "none"
+    }
+
+    if (mode == "Order"){
+        document.getElementById("requirements-options-section").style.display = "block"
+    }
+    else{
+        document.getElementById("requirements-options-section").style.display = "none"
     }
 
     currentMode = mode
@@ -314,7 +360,6 @@ function exportLevel(){
 function exportLevelUI(){
     let level = {}
     let map = exportLevel()
-    console.log(map)
     level['tileMap'] = map
     level['gameModeName'] = "Classic moves"
     level['numberOfColours'] = preferredColors.length
@@ -377,6 +422,29 @@ function exportLevelUI(){
         level['numIngredientsOnScreen'] = 1
         level['ingredientSpawnDensity'] = 0
         level['maxNumIngredientsOnScreen'] = 1
+    }
+
+    if (currentMode === "Order"){
+        let orders = []
+        let requirementsContainer = document.getElementById("requirements")
+        for (var i = 0; i < requirementsContainer.children.length; i++){
+            element = requirementsContainer.children[i]
+
+            console.log(element)
+            let item = Number(element.querySelector("select").value)
+
+            let quantity = element.querySelector("input").value
+            if (quantity === ''){
+                quantity = 0
+            }
+            else{
+                quantity = Number(quantity)
+            }
+
+            orders.push({"item": item, "quantity": quantity})
+        }
+
+        level['_itemsToOrder'] = orders
     }
 
     level['gameModeName'] = currentMode
