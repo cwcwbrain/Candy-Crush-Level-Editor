@@ -161,6 +161,7 @@
                         <div class="selectcoloredelement" element="jellyfish_striped"></div>
                         <div class="selectcoloredelement" element="jellyfish_wrapped"></div>
                         <div class="selectcoloredelement" element="jellyfish_colorbomb"></div>
+                        <div class="selectcoloredelement" element="frog"></div>
                         <div class="selectelement" element="bomb", gamelayer="normal"></div>
                         <div class="selectelement" element="coconut_wheel", gamelayer="normal"></div>
                         <div class="selectelement" element="ufo", gamelayer="normal"></div>
@@ -183,6 +184,8 @@
                         <div class="selectelement" element="grid" gamelayer="tile"></div>
                         <div class="selectelement" element="jelly" gamelayer="tile"></div>
                         <div class="selectelement" element="jelly2" gamelayer="tile"></div>
+                        <div class="selectelement" element="blue_tile" gamelayer="tile"></div>
+                        <div class="selectelement" element="black_tile" gamelayer="tile"></div>
                     </div>
 
                     <button class="dropdown" onclick="toggleDropdown(this)" associd="blockers">
@@ -282,6 +285,28 @@
                         <div class="selectelement" element="dark_chocolate_spawner_1" gamelayer="normal"></div>
                         <div class="selectelement" element="dark_chocolate_spawner_2" gamelayer="normal"></div>
                         <div class="selectelement" element="dark_chocolate_spawner_3" gamelayer="normal"></div>
+                        <div class="selectelement" element="magic_mixer" gamelayer="normal"></div>
+                    </div>
+
+                    <button class="dropdown" onclick="toggleDropdown(this)" associd="walls">
+                        <div style="display: flex; justify-content: space-between;">
+                            <p class='MergePro' style="padding-left: 5%; ">Walls</p>
+                            <p class="arrow" style="display: inline; padding-right: 5%; transform: rotate(90deg);">&raquo</p>
+                          </div>
+                    </button>
+                    <div class="dropped" id="walls" style="display:none">
+                        <button onclick="updateSelection(this, 'wall_down', 'walldown')" class="">
+                            <img class="selectionimage" src="elements/wall_down_ui.png">
+                        </button>
+                        <button onclick="updateSelection(this, 'wall_up', 'wallup')" class="">
+                            <img class="selectionimage" src="elements/wall_up_ui.png">
+                        </button>
+                        <button onclick="updateSelection(this, 'wall_left', 'wallleft')" class="">
+                            <img class="selectionimage" src="elements/wall_left_ui.png">
+                        </button>
+                        <button onclick="updateSelection(this, 'wall_right', 'wallright')" class="">
+                            <img class="selectionimage" src="elements/wall_right_ui.png">
+                        </button>
                     </div>
                 </div>
             </div>

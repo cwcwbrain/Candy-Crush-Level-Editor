@@ -217,6 +217,30 @@ table, td, tr {
     transform: translateY(-50%);
   }
 
+#level .walldown {
+    position: absolute;
+    bottom: 90%;
+    z-index: 3;
+}
+
+#level .wallup {
+    position: absolute;
+    bottom: -90%;
+    z-index: 3;
+}
+
+#level .wallleft {
+    position: absolute;
+    right: 100%;
+    z-index: 3;
+}
+
+#level .wallright {
+    position: absolute;
+    right: -100%;
+    z-index: 3;
+}
+
 #level .stretched {
     max-width:72px;
     max-height:64px;
