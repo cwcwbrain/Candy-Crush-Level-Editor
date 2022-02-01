@@ -244,10 +244,13 @@ function updateTile(object){
         try{
             let prevElm = document.querySelector(".frog")
             prevElm.classList.remove("frog")
-            prevElm.setAttribute("normal", "002")
-            prevElm.setAttribute("color", "002")
-            prevElm.querySelector(".normal").src = elementsFolder + "random.png"
-            prevElm.querySelector(".normal").setAttribute("class", "normal default")
+
+            if (prevElm.getAttribute("normal") === "036"){
+                prevElm.setAttribute("normal", "002")
+                prevElm.setAttribute("color", "002")
+                prevElm.querySelector(".normal").src = elementsFolder + "random.png"
+                prevElm.querySelector(".normal").setAttribute("class", "normal default small")
+            }
         }catch{}
 
         //Set colored Candy
