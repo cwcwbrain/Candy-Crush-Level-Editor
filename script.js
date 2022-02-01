@@ -1,6 +1,6 @@
 const colors = {"002": "random", "055": "red", "056": "yellow", "057": "blue", "058": "green", "059": "orange", "060": "purple"}
 const coloredCandy = {"002": "random", "018": "pepper_candy", "045": "striped_horizontal", "046": "striped_vertical", "047": "wrapped", "049":"jellyfish", "051": "key", "052": "lucky", "091": "jellyfish_striped", "092": "jellyfish_wrapped", "093": "jellyfish_colorbomb"}
-const candy = {"044": "bomb", "043": "coconut_wheel", "061": "ufo"}
+const candy = {"044": "bomb", "043": "coconut_wheel", "061": "ufo", "066": "bobber"}
 const sugarCoats = {"134": "sugarcoat_1", "135": "sugarcoat_2", "136": "sugarcoat_3"}
 const locks = {"008": "licorice", "025": "marmalade", "038": "mulock1", "039": "mulock2", "040": "mulock3", "041": "mulock4", "042": "mulock5"}
 const glass = {"122": "glass_tile_1", "123": "glass_tile_2", "124": "glass_tile_3",}
