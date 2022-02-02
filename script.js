@@ -1,6 +1,6 @@
 const colors = {"002": "random", "055": "red", "056": "yellow", "057": "blue", "058": "green", "059": "orange", "060": "purple"}
 const coloredCandy = {"002": "random", "018": "pepper_candy", "036": "frog", "045": "striped_horizontal", "046": "striped_vertical", "047": "wrapped", "049":"jellyfish", "051": "key", "052": "lucky", "091": "jellyfish_striped", "092": "jellyfish_wrapped", "093": "jellyfish_colorbomb"}
-const candy = {"044": "bomb", "043": "coconut_wheel", "061": "ufo", "066": "bobber"}
+const candy = {"035": "cake_bomb", "044": "bomb", "043": "coconut_wheel", "061": "ufo", "066": "bobber"}
 const sugarCoats = {"134": "sugarcoat_1", "135": "sugarcoat_2", "136": "sugarcoat_3"}
 const locks = {"008": "licorice", "025": "marmalade", "038": "mulock1", "039": "mulock2", "040": "mulock3", "041": "mulock4", "042": "mulock5"}
 const glass = {"122": "glass_tile_1", "123": "glass_tile_2", "124": "glass_tile_3",}
@@ -189,16 +189,60 @@ function updateColor(object, color){
     selectedColor = elements_names[color]
 }
 
+function removeCake(object){
+    let cake = object.getAttribute("cake")
+    let tiles = []
+    let row = Number(object.getAttribute("pos-row"))
+    let column = Number(object.getAttribute("pos-col"))
+    let level = document.getElementById("level")
+
+    object.setAttribute("normal", "002")
+    object.setAttribute("color", "002")
+    object.setAttribute("cake", "")
+    object.querySelector(".normal").src = elementsFolder + "random.png"
+    object.querySelector(".normal").setAttribute("class", "normal default small")
+
+    if (cake == "1"){
+        tiles = [[row, column + 1], [row + 1, column], [row + 1, column + 1]]
+    }
+    else if (cake == "2"){
+        tiles = [[row, column - 1], [row + 1, column - 1], [row + 1, column]]
+    }
+    else if (cake == "3"){
+        tiles = [[row - 1, column], [row - 1, column + 1], [row, column + 1]]
+    }
+    else if (cake == "4"){
+        tiles = [[row - 1, column - 1], [row - 1, column], [row, column - 1]]
+    }
+
+    tiles.forEach(function(pos){
+        let otherObject = level.children[pos[0]].children[pos[1]]
+        otherObject.setAttribute("normal", "002")
+        otherObject.setAttribute("color", "002")
+        otherObject.setAttribute("cake", "")
+        otherObject.querySelector(".normal").src = elementsFolder + "random.png"
+        otherObject.querySelector(".normal").setAttribute("class", "normal default small")
+    })
+}
+
 function updateTile(object){
     if (elementLayer !== "tile" && object.getAttribute("tile") === "000"){
         //Do not update tile if its empty
         return
     }
 
+    isCake = object.getAttribute("cake")
+    if (isCake !== undefined && isCake !== "" && elementLayer === "normal"){
+        removeCake(object)
+    }
+
     let image = object.querySelector("." + elementLayer)
 
     if (elementLayer == "tile"){
         if (selectedElement === "empty"){
+            if (isCake !== undefined && isCake !== ""){
+                removeCake(object)
+            }
             //Make space empty if empty selected
             layers.forEach(function(layer){
                 if (object.hasAttribute(layer) && layer != "tile"){
@@ -218,6 +262,10 @@ function updateTile(object){
 
         //Remove all if empty
         if (selectedElement === "000"){
+            if (isCake !== undefined && isCake !== ""){
+                removeCake(object)
+            }
+
             layers.forEach(function(layer){
                 if (object.hasAttribute(layer)){
                     object.setAttribute(layer, "")
@@ -239,6 +287,50 @@ function updateTile(object){
         else{
             return
         }
+    }
+    else if (selectedElement == "035"){
+        let level = document.getElementById("level")
+        let row = Number(object.getAttribute("pos-row"))
+        let column = Number(object.getAttribute("pos-col"))
+
+        if (row >= 8 || column >= 8){
+            return
+        }
+
+        //Set this tile as cakebomb
+        let isCake = object.getAttribute("cake")
+        if (isCake !== undefined && isCake !== ""){
+            removeCake(object)
+        }
+        image.src = elementsFolder + "cake_top_left" + ".png"
+        image.setAttribute("class", "normal default stretch")
+        object.setAttribute("normal", selectedElement)
+        object.setAttribute("color", "")
+        object.setAttribute("cake", "1")
+
+        let tileList = [[row, column + 1, "cake_top_right", "2"], [row + 1, column, "cake_bottom_left", "3"], [row + 1, column + 1, "cake_bottom_right", "4"]]
+
+        tileList.forEach(function(info){
+            try{
+                let otherObject = level.children[info[0]].children[info[1]]
+                let otherImage = otherObject.querySelector("img.normal")
+
+                isCake = otherObject.getAttribute("cake")
+                if (isCake !== undefined && isCake !== ""){
+                    removeCake(otherObject)
+                }
+    
+                otherImage.src = elementsFolder + info[2] + ".png"
+                otherImage.setAttribute("class", "normal default stretch")
+                otherObject.setAttribute("normal", selectedElement)
+                otherObject.setAttribute("color", "")
+                otherObject.setAttribute("cake", info[3])
+                if (otherObject.getAttribute("tile") === "000"){
+                    otherObject.setAttribute("tile", "001")
+                    otherObject.querySelector("img.tile").src = elementsFolder + "grid.png"
+                }
+            }catch{}
+        })
     }
     else if (selectedElement == "036"){
         try{
@@ -625,6 +717,8 @@ function createNewTable(){
                 var object = document.createElement("td")
                 object.setAttribute("style", "position: relative; left: 0; top: 0;")
 
+                object.setAttribute("pos-row", i)
+                object.setAttribute("pos-col", g)
 
                 object.addEventListener('contextmenu', function(ev) {
                     ev.preventDefault()

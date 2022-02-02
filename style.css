@@ -125,6 +125,18 @@ table, td, tr {
     left: 0;
 }
 
+img[src="elements/cake_top_left.png"], img[src="elements/cake_bottom_left.png"]{
+    position: absolute;
+    right: -11% !important;
+    z-index: 3;
+}
+
+img[src="elements/cake_top_right.png"], img[src="elements/cake_bottom_right.png"]{
+    position: absolute;
+    right: 100% !important;
+    z-index: 3;
+}
+
 .sideselection {
     height: 100%; 
     width: 20%; 
@@ -278,6 +290,15 @@ table, td, tr {
     position: absolute;
     bottom: -100%;
     z-index: 3;
+}
+
+#level .cakebomb {
+    position: absolute;
+    z-index: 3;
+    bottom: -100%;
+    left: 10% !important;
+    max-width:144px !important;
+    max-height:128px !important;
 }
 
 #level .default {
