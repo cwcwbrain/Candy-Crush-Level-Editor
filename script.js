@@ -341,7 +341,7 @@ function updateTile(object){
 
             if (prevElm.getAttribute("normal") === "036"){
                 prevElm.setAttribute("normal", "002")
-                prevElm.setAttribute("color", "002")
+                prevElm.setAttribute("color", selectedColor)
                 prevElm.querySelector(".normal").src = elementsFolder + "random.png"
                 prevElm.querySelector(".normal").setAttribute("class", "normal default small")
             }
