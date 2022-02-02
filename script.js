@@ -231,12 +231,54 @@ function updateTile(object){
         return
     }
 
+    let row = Number(object.getAttribute("pos-row"))
+    let column = Number(object.getAttribute("pos-col"))
+
     isCake = object.getAttribute("cake")
     if (isCake !== undefined && isCake !== "" && elementLayer === "normal"){
         removeCake(object)
     }
 
     let image = object.querySelector("." + elementLayer)
+
+    try{
+        if (elementLayer == "wallup"){
+            let level = document.getElementById("level")
+            let otherObject = level.children[row - 1].children[column]
+            let hasWall = otherObject.getAttribute("walldown")
+            if (hasWall !== null && hasWall !== ""){
+                otherObject.setAttribute("walldown", "")
+                otherObject.querySelector("img.walldown").src = ""
+            }
+        }
+        else if (elementLayer == "walldown"){
+            let level = document.getElementById("level")
+            let otherObject = level.children[row + 1].children[column]
+            let hasWall = otherObject.getAttribute("wallup")
+            if (hasWall !== null && hasWall !== ""){
+                otherObject.setAttribute("wallup", "")
+                otherObject.querySelector("img.wallup").src = ""
+            }
+        }
+        else if (elementLayer == "wallleft"){
+            let level = document.getElementById("level")
+            let otherObject = level.children[row].children[column - 1]
+            let hasWall = otherObject.getAttribute("wallright")
+            if (hasWall !== null && hasWall !== ""){
+                otherObject.setAttribute("wallright", "")
+                otherObject.querySelector("img.wallright").src = ""
+            }
+        }
+        else if (elementLayer == "wallright"){
+            let level = document.getElementById("level")
+            let otherObject = level.children[row].children[column + 1]
+            let hasWall = otherObject.getAttribute("wallleft")
+            if (hasWall !== null && hasWall !== ""){
+                otherObject.setAttribute("wallleft", "")
+                otherObject.querySelector("img.wallleft").src = ""
+            }
+        }
+    }catch{}
 
     if (elementLayer == "tile"){
         if (selectedElement === "empty"){
@@ -290,8 +332,6 @@ function updateTile(object){
     }
     else if (selectedElement == "035"){
         let level = document.getElementById("level")
-        let row = Number(object.getAttribute("pos-row"))
-        let column = Number(object.getAttribute("pos-col"))
 
         if (row >= 8 || column >= 8){
             return

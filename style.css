@@ -249,7 +249,7 @@ img[src="elements/cake_top_right.png"], img[src="elements/cake_bottom_right.png"
 
 #level .wallright {
     position: absolute;
-    right: -100%;
+    right: -120%;
     z-index: 3;
 }
 
