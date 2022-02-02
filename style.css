@@ -231,13 +231,13 @@ img[src="elements/cake_top_right.png"], img[src="elements/cake_bottom_right.png"
 
 #level .walldown {
     position: absolute;
-    bottom: 90%;
+    bottom: -90%;
     z-index: 3;
 }
 
 #level .wallup {
     position: absolute;
-    bottom: -90%;
+    bottom: 90%;
     z-index: 3;
 }
 
