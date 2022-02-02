@@ -323,6 +323,8 @@ function updateTile(object){
                 otherImage.src = elementsFolder + info[2] + ".png"
                 otherImage.setAttribute("class", "normal default stretch")
                 otherObject.setAttribute("normal", selectedElement)
+                otherObject.setAttribute("sugarcoat", "")
+                otherObject.querySelector("img.sugarcoat").src = ""
                 otherObject.setAttribute("color", "")
                 otherObject.setAttribute("cake", info[3])
                 if (otherObject.getAttribute("tile") === "000"){
