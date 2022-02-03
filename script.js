@@ -4,7 +4,7 @@ const candy = {"035": "cake_bomb", "044": "bomb", "043": "coconut_wheel", "061":
 const sugarCoats = {"134": "sugarcoat_1", "135": "sugarcoat_2", "136": "sugarcoat_3"}
 const locks = {"008": "licorice", "025": "marmalade", "038": "mulock1", "039": "mulock2", "040": "mulock3", "041": "mulock4", "042": "mulock5"}
 const glass = {"122": "glass_tile_1", "123": "glass_tile_2", "124": "glass_tile_3",}
-const blockers = {"009": "chocolate", "017": "licorice_square", "019": "block_multi_frosting1", "020": "block_multi_frosting2", "021": "block_multi_frosting3", "022": "block_multi_frosting4", "023": "block_multi_frosting5", "024": "chocolate_spawner", "054": "shell_1", "062": "magic_mixer", "079": "block_waffle1", "080": "block_waffle2", "081": "block_waffle3", "082": "block_waffle4", "083": "block_waffle5", "094": "dark_chocolate_1", "095": "dark_chocolate_2", "096": "dark_chocolate_3", "097": "dark_chocolate_4", "098": "dark_chocolate_5", "129": "chain_layer1_c", "130": "chain_layer2_c", "131": "chain_layer3_c", "132": "chain_layer4_c", "133": "chain_layer5_c", "157": "shell_3", "158": "shell_2", "159": "bubble_pop_1", "160": "bubble_pop_2", "161": "bubble_pop_3", "162": "bubble_pop_4", "163": "bubble_pop_5", "211": "dark_chocolate_spawner_1", "212": "dark_chocolate_spawner_2", "213": "dark_chocolate_spawner_3", "220": "jelly_jar_1", "221": "jelly_jar_2"}
+const blockers = {"053": "chocolate_frog", "009": "chocolate", "017": "licorice_square", "019": "block_multi_frosting1", "020": "block_multi_frosting2", "021": "block_multi_frosting3", "022": "block_multi_frosting4", "023": "block_multi_frosting5", "024": "chocolate_spawner", "054": "shell_1", "062": "magic_mixer", "079": "block_waffle1", "080": "block_waffle2", "081": "block_waffle3", "082": "block_waffle4", "083": "block_waffle5", "094": "dark_chocolate_1", "095": "dark_chocolate_2", "096": "dark_chocolate_3", "097": "dark_chocolate_4", "098": "dark_chocolate_5", "129": "chain_layer1_c", "130": "chain_layer2_c", "131": "chain_layer3_c", "132": "chain_layer4_c", "133": "chain_layer5_c", "157": "shell_3", "158": "shell_2", "159": "bubble_pop_1", "160": "bubble_pop_2", "161": "bubble_pop_3", "162": "bubble_pop_4", "163": "bubble_pop_5", "211": "dark_chocolate_spawner_1", "212": "dark_chocolate_spawner_2", "213": "dark_chocolate_spawner_3", "220": "jelly_jar_1", "221": "jelly_jar_2"}
 const tiles = {"empty": "empty", "000": "none", "001": "grid", "003": "jelly", "004": "jelly2", "064": "blue_tile", "065": "black_tile"}
 const ingredients = {"125": "cherry", "126": "hazelnut"}
 const walldown = {"087": "wall_down", "165": "licorice_wall_down"}
@@ -379,7 +379,7 @@ function updateTile(object){
             let prevElm = document.querySelector(".frog")
             prevElm.classList.remove("frog")
 
-            if (prevElm.getAttribute("normal") === "036"){
+            if (prevElm.getAttribute("normal") === "036" || prevElm.getAttribute("normal") === "053"){
                 prevElm.setAttribute("normal", "002")
                 prevElm.setAttribute("color", selectedColor)
                 prevElm.querySelector(".normal").src = elementsFolder + "random.png"
@@ -406,6 +406,25 @@ function updateTile(object){
         object.setAttribute(elementLayer, selectedElement)
         object.classList.add("frog")
         image.src = elementsFolder + name + ".png"
+    }
+    else if (selectedElement == "053"){
+        try{
+            let prevElm = document.querySelector(".frog")
+            console.log(prevElm)
+            prevElm.classList.remove("frog")
+    
+            if (prevElm.getAttribute("normal") === "036" || prevElm.getAttribute("normal") === "053"){
+                prevElm.setAttribute("normal", "002")
+                prevElm.setAttribute("color", selectedColor)
+                prevElm.querySelector(".normal").src = elementsFolder + "random.png"
+                prevElm.querySelector(".normal").setAttribute("class", "normal default small")
+            }
+        }catch{}
+
+        object.classList.add("frog")
+        image.src = elementsFolder + elements_ids[selectedElement] + ".png"
+        object.setAttribute("normal", selectedElement)
+        object.setAttribute("color", "")
     }
     else if (elementLayer == "normal"){
         image = object.querySelector(".normal")

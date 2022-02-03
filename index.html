@@ -161,12 +161,22 @@
                         <div class="selectcoloredelement" element="jellyfish_striped"></div>
                         <div class="selectcoloredelement" element="jellyfish_wrapped"></div>
                         <div class="selectcoloredelement" element="jellyfish_colorbomb"></div>
-                        <div class="selectcoloredelement" element="frog"></div>
                         <div class="selectelement" element="bomb", gamelayer="normal"></div>
                         <div class="selectelement" element="coconut_wheel", gamelayer="normal"></div>
                         <div class="selectelement" element="ufo", gamelayer="normal"></div>
                         <div class="selectelement" element="bobber", gamelayer="normal"></div>
                         <div class="selectelement" element="cake_bomb" gamelayer="normal"></div>
+                    </div>
+
+                    <button class="dropdown" onclick="toggleDropdown(this)" associd="frogss">
+                        <div style="display: flex; justify-content: space-between;">
+                            <p class='MergePro' style="padding-left: 5%; ">Frog</p>
+                            <p class="arrow" style="display: inline; padding-right: 5%; transform: rotate(90deg);">&raquo</p>
+                          </div>
+                    </button>
+                    <div class="dropped" id="frogss" style="display:none">
+                        <div class="selectcoloredelement" element="frog"></div>
+                        <div class="selectelement" element="chocolate_frog" gamelayer="normal"></div>
                     </div>
 
                     <button class="dropdown" onclick="toggleDropdown(this)" associd="tiles">
@@ -231,7 +241,6 @@
                         <div class="selectelement" element="shell_3" gamelayer="normal"></div>
                         <div class="selectelement" element="jelly_jar_1" gamelayer="normal"></div>
                         <div class="selectelement" element="jelly_jar_2" gamelayer="normal"></div>
-                        <!-- <div class="selectelement" element="horizontal" gamelayer="fence_down"></div> -->
                     </div>
 
                     <button class="dropdown" onclick="toggleDropdown(this)" associd="locks">
