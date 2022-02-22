@@ -636,7 +636,12 @@ function importLevel(levelData){
     
             objects.forEach(function(object, cIndex){
                 //Split object into array of parts of 3
-                textObject = levelArray[rIndex][cIndex].match(/.{1,3}/g)
+                try{
+                    textObject = levelArray[rIndex][cIndex].match(/.{1,3}/g)
+                }
+                catch{
+                    throw "This level has a grid bigger than 9x9"
+                }
 
                 textObject.forEach(function(objectId, index){
                     if (objectId in colors){
