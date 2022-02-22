@@ -737,6 +737,14 @@ function importLevel(levelData){
         child.remove()
     })
 
+    //Set Pre Level Booster
+    try{
+        document.getElementById("disablebooster").checked = levelData.disablePreLevelBoosters || false
+    } 
+    catch{
+        document.getElementById("disablebooster").checked = false
+    }
+
     //Set score targets
     let scoreTargets = levelData.scoreTargets || []
     document.getElementById("star1").value = scoreTargets[0] || ''
@@ -846,7 +854,7 @@ function exportLevel(){
     level['numberOfColours'] = preferredColors.length
     level['preferredColors'] = preferredColors
 
-    level['disablePreLevelBoosters'] = false
+    level['disablePreLevelBoosters'] = document.getElementById("disablebooster").checked
     level['colorWeightAdjustments'] = [0]
 
     let star1 = document.getElementById("star1").value || 1000
