@@ -613,6 +613,10 @@ function importLevel(levelData){
     originalLevel.id = "levelold"
     originalLevel.style.display = "none"
 
+    let origColor = selectedColor
+    let origLayer = elementLayer
+    let origElement = selectedElement
+
     let newLevel = levelParent.appendChild(document.createElement("table"))
     newLevel.id = "level"
     newLevel.setAttribute("cellspacing", "0")
@@ -765,6 +769,11 @@ function importLevel(levelData){
             }catch{}
         })
     }
+
+    //Set element selection back
+    selectedColor = origColor
+    elementLayer = origLayer
+    selectedElement = origElement
 }
 
 function displayImportLevelUI(){
