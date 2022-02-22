@@ -59,7 +59,7 @@ const layerElements = {
     "candy_entrance": ["005"]
 }
 
-var preferredColors = [0,1,2,3,4,5]
+var preferredColors = [0,1,2,3,4]
 
 var isDown = false
 
@@ -93,33 +93,65 @@ function switchedRequirement(object){
     image.src = "ui/hud/" + orderItems[requirement] + ".png"
 }
 
+function switchedRequirementIngredient(object){
+    document.getElementById("requirementwarning").style.display = "none"
+    let requirement = object.value
+    let image = object.parentNode.querySelector("img")
+    image.src = "ui/hud/" + requirement + ".png"
+}
+
 function removeRequirement(object){
     object.parentNode.remove()
     document.getElementById("requirementwarning").style.display = "none"
 }
 
-function addRequirement(){
+function addRequirement(isIngredient = false, ignoreLimit = false){
     let requirementsObj = document.getElementById("requirements")
 
-    if (requirementsObj.childNodes.length > 3){
-        document.getElementById("requirementwarning").style.display = "block"
-        return
-    }
-    else{
-        document.getElementById("requirementwarning").style.display = "none"
+    if (!ignoreLimit){
+        if (requirementsObj.childNodes.length > 3){
+            document.getElementById("requirementwarning").style.display = "block"
+            return
+        }
+        else{
+            document.getElementById("requirementwarning").style.display = "none"
+        }
     }
     
     section = document.createElement("div")
     section.classList.add("sideoptions")
-    section.innerHTML = '<button style="left: 85%; border-radius: 10px; background-color: rgb(174, 174, 174); width: 30px; height: 30px" onclick="removeRequirement(this)">X</button> <p class="DroidSans break" style="font-weight: bold; color: white; text-align: center;">Requirement:</p> <img src="ui/hud/red.png" style="max-width: 30px; max-height: 30px;"> <p class="DroidSans" style="margin: 10px; display: block; color: white; text-align: center;">Order:</p> <select onchange="switchedRequirement(this)"> </select> <div class="break"></div> <img src="ui/btn_quit.png" style="max-width: 30px; max-height: 30px;"> <p class="DroidSans" style="margin: 10px; display: block; color: white; text-align: center;">Amount:</p> <input style="width: 50px; text-align: center;" placeholder="0" type="number">'
+    let typeText = "Order"
+    section.setAttribute("reqtype", "order")
+    if (isIngredient){
+        typeText = "Ingredient"
+        section.setAttribute("reqtype", "ingredient")
+    }
+    section.innerHTML = '<button style="left: 85%; border-radius: 10px; background-color: rgb(174, 174, 174); width: 30px; height: 30px" onclick="removeRequirement(this)">X</button> <p class="DroidSans break" style="font-weight: bold; color: white; text-align: center;">Requirement:</p> <img src="ui/hud/red.png" style="max-width: 30px; max-height: 30px;"> <p class="DroidSans" style="margin: 10px; display: block; color: white; text-align: center;">' + typeText + ':</p> <select onchange="switchedRequirement(this)"> </select> <div class="break"></div> <img src="ui/btn_quit.png" style="max-width: 30px; max-height: 30px;"> <p class="DroidSans" style="margin: 10px; display: block; color: white; text-align: center;">Amount:</p> <input style="width: 50px; text-align: center;" placeholder="0" type="number">'
 
     select = section.querySelector("select")
-    Object.keys(orderItems).forEach(function(key){
+    if (!isIngredient){
+        Object.keys(orderItems).forEach(function(key){
+            option = document.createElement("option")
+            option.value = key
+            option.innerHTML = orderItems[key]
+            select.appendChild(option)
+        })
+    }
+    else{
+        select.setAttribute("onchange", "switchedRequirementIngredient(this)")
+        section.querySelector("img").src = "ui/hud/cherry.png"
+
+        let option
         option = document.createElement("option")
-        option.value = key
-        option.innerHTML = orderItems[key]
+        option.value = "cherry"
+        option.innerHTML = "cherry"
         select.appendChild(option)
-    })
+
+        option = document.createElement("option")
+        option.value = "hazelnut"
+        option.innerHTML = "hazelnut"
+        select.appendChild(option)
+    }
     requirementsObj.prepend(section)
 }
 
@@ -135,17 +167,43 @@ function selectMode(){
     }
 
     if (mode === "Drop down"){
-        document.getElementById("ingredients-options-section").style.display = "block"
+        document.getElementById("requirements-options-section").style.display = "block"
+        document.getElementById("addingredient").style.display = "block"
+
+        let requirementsContainer = document.getElementById("requirements")
+        Array.from(requirementsContainer.children).forEach(function(child){
+            element = child
+
+            if (element.getAttribute("reqtype") == "order"){
+                element.remove()
+            }
+        })
     }
     else{
-        document.getElementById("ingredients-options-section").style.display = "none"
+        if (mode != "Order"){
+            document.getElementById("requirements-options-section").style.display = "none"
+        }
+        document.getElementById("addingredient").style.display = "none"
     }
 
     if (mode == "Order"){
         document.getElementById("requirements-options-section").style.display = "block"
+        document.getElementById("addorder").style.display = "block"
+
+        let requirementsContainer = document.getElementById("requirements")
+        Array.from(requirementsContainer.children).forEach(function(child){
+            element = child
+
+            if (element.getAttribute("reqtype") == "ingredient"){
+                element.remove()
+            }
+        })
     }
-    else{
-        document.getElementById("requirements-options-section").style.display = "none"
+    else {
+        if (mode != "Drop down"){
+            document.getElementById("requirements-options-section").style.display = "none"
+        }
+        document.getElementById("addorder").style.display = "none"
     }
 
     currentMode = mode
@@ -550,42 +608,182 @@ function updateElmState(object){
 }
 
 function importLevel(levelData){
-    createNewTable()
+    let originalLevel = document.getElementById("level")
+    let levelParent = originalLevel.parentElement;
+    originalLevel.id = "levelold"
+    originalLevel.style.display = "none"
+
+    let newLevel = levelParent.appendChild(document.createElement("table"))
+    newLevel.id = "level"
+    newLevel.setAttribute("cellspacing", "0")
+    createNewTable(true)
 
     levelArray = levelData['tileMap']
 
-    let levelObject = document.getElementById("level")
-    let childrenRows = [].slice.call(levelObject.children)
-    childrenRows.forEach(function(row, rIndex){
-        let objects = [].slice.call(row.children)
-        let color = "002"
+    try{
+        let levelObject = newLevel
+        let childrenRows = [].slice.call(levelObject.children)
 
-        objects.forEach(function(object, cIndex){
-            //Split object into array of parts of 3
-            textObject = levelArray[rIndex][cIndex].match(/.{1,3}/g)
+        let blacklistedCake = []
 
-            textObject.forEach(function(objectId){
-                console.log(objectId)
-                if (objectId.length !== 3){
-                    throw "An object ID is not 3 characters long."
-                }
+        childrenRows.forEach(function(row, rIndex){
+            let objects = [].slice.call(row.children)
+            let color = "002"
+    
+            objects.forEach(function(object, cIndex){
+                //Split object into array of parts of 3
+                textObject = levelArray[rIndex][cIndex].match(/.{1,3}/g)
 
-                if (objectId in colors){
-                    color = objectId
-                    return
-                }
+                textObject.forEach(function(objectId, index){
+                    if (objectId in colors){
+                        color = objectId
+                        if (objectId != "002")
+                        textObject.splice(index, 1)
+                    }
+                })
+    
+                textObject.forEach(function(objectId){
+                    if (objectId.length !== 3){
+                        throw "An object ID is not 3 characters long."
+                    }
 
-                console.log(objectId in colors)
+                    if (objectId == "002" && object.getAttribute("normal") != undefined){
+                        return
+                    }
 
-                let layer = getLayerFromId(objectId)
-                selectedColor = color
-                elementLayer = layer
-                selectedElement = objectId
-
-                updateTile(object)
+                    if (objectId == "035"){
+                        if (blacklistedCake.includes(String(rIndex) + String(cIndex))){
+                            return
+                        }
+                        else{
+                            if (cIndex == 8 || rIndex == 8){
+                                return
+                            }
+                            else{
+                                blacklistedCake.push(String(rIndex) + String(cIndex + 1))
+                                blacklistedCake.push(String(rIndex + 1) + String(cIndex))
+                                blacklistedCake.push(String(rIndex + 1) + String(cIndex + 1))
+                            }
+                        }
+                    }
+    
+                    let layer = getLayerFromId(objectId)
+                    selectedColor = color
+                    elementLayer = layer
+                    selectedElement = objectId
+                    
+                    try{
+                        updateTile(object)
+                    }
+                    catch{
+                        elementLayer = "tile"
+                        selectedElement = "none"
+                    }
+                })
             })
         })
+        originalLevel.remove()
+        newLevel.style.display = "block"
+    }
+    catch(err){
+        console.log(err)
+        newLevel.remove()
+        originalLevel.id = "level"
+        originalLevel.style.display = "block"
+        throw(err)
+    }
+    
+    //Set game mode
+    let wantedMode = levelData['gameModeName']
+    let wantedModeInput = document.getElementById("modeselection").querySelector('input[value="' + String(wantedMode) + '"]')
+    if (wantedModeInput != null){
+        wantedModeInput.click()
+    }
+
+    //Set moves & time
+    document.getElementById("moves").value = levelData.moveLimit || ""
+    document.getElementById("time").value = levelData.timeLimit || ""
+
+    //Set preferred colors
+    let colorspref = document.getElementById("colorspref-section")
+    preferredColors = levelData.preferredColors || [0,1,2,3,4]
+    for (let i = 0; i < 6; i++){
+        let prefbutton = colorspref.querySelector('button[value="' + String(i) + '"]')
+        if (preferredColors.includes(i)){
+            if (!prefbutton.classList.contains("preferredselected")){
+                prefbutton.classList.add("preferredselected")
+            }
+        }
+        else{
+            if (prefbutton.classList.contains("preferredselected")){
+                prefbutton.classList.remove("preferredselected")
+            }
+        }
+    }
+
+    //Add requirements
+    let requirementsContainer = document.getElementById("requirements")
+
+    Array.from(requirementsContainer.children).forEach(function(child){
+        child.remove()
     })
+
+    let ingredientOrder = {0: "hazelnut", 1: "cherry"}
+    if (wantedMode == "Drop down" || wantedMode == "Order Drop Down"){
+        levelData.ingredients.forEach(function(quantity, index){
+            try{
+                if (quantity == 0){
+                    return
+                }
+                let item = ingredientOrder[index]
+
+                addRequirement(true, true)
+
+                let requirementNode = requirementsContainer.children[0]
+                let selectNode = requirementNode.querySelector("select")
+                selectNode.value = item
+                switchedRequirementIngredient(selectNode)
+
+                requirementNode.querySelector("input").value = quantity
+            }catch{}
+        })
+    }
+    if (wantedMode == "Order" || wantedMode == "Order Drop Down"){
+        levelData._itemsToOrder.forEach(function(itemDict){
+            try{
+                let item = itemDict['item']
+                let quantity = itemDict['quantity']
+
+                addRequirement(false, true)
+
+                let requirementNode = requirementsContainer.children[0]
+                let selectNode = requirementNode.querySelector("select")
+                selectNode.value = item
+                switchedRequirement(selectNode)
+
+                requirementNode.querySelector("input").value = quantity
+            }catch{}
+        })
+    }
+}
+
+function displayImportLevelUI(){
+    document.getElementById("importmenu").style.display = "block"
+}
+
+function importLevelUI(){
+    try{
+        let importField = document.getElementById("importfield")
+        importLevel(JSON.parse(importField.value))
+        document.getElementById("importerror").style.display = "none"
+        importField.value = ""
+        document.getElementById("importmenu").style.display = "none"
+    }
+    catch(err) {
+        let errorPara =  document.getElementById("importerror")
+        errorPara.style.display = "block"
+        errorPara.innerHTML = err
+    }
 }
 
 function exportLevel(){
@@ -664,26 +862,38 @@ function exportLevel(){
     }
 
     if (currentMode === "Drop down"){
-        let cherries = document.getElementById("cherries").value
-        if (cherries === ''){
-            cherries = 0
-        }
-        else{
-            cherries = Number(cherries)
-        }
+        let hazelnuts = 0
+        let cherries = 0
 
-        let hazelnuts = document.getElementById("hazelnuts").value
-        if (hazelnuts === ''){
-            hazelnuts = 0
-        }
-        else{
-            hazelnuts = Number(hazelnuts)
+        let requirementsContainer = document.getElementById("requirements")
+        for (var i = 0; i < requirementsContainer.children.length; i++){
+            element = requirementsContainer.children[i]
+
+            if (element.getAttribute("reqtype") !== "ingredient"){
+                continue
+            }
+
+            let item = element.querySelector("select").value
+
+            let quantity = element.querySelector("input").value
+            if (quantity === ''){
+                quantity = 0
+            }
+            else{
+                quantity = Number(quantity)
+            }
+
+            console.log(item)
+
+            if (item == "cherry"){
+                cherries = quantity
+            }
+            else if (item == "hazelnut"){
+                hazelnuts = quantity
+            }
         }
 
         level['ingredients'] = [hazelnuts, cherries]
-        level['numIngredientsOnScreen'] = 1
-        level['ingredientSpawnDensity'] = 0
-        level['maxNumIngredientsOnScreen'] = 1
     }
 
     if (currentMode === "Order"){
@@ -692,7 +902,10 @@ function exportLevel(){
         for (var i = 0; i < requirementsContainer.children.length; i++){
             element = requirementsContainer.children[i]
 
-            console.log(element)
+            if (element.getAttribute("reqtype") !== "order"){
+                continue
+            }
+
             let item = Number(element.querySelector("select").value)
 
             let quantity = element.querySelector("input").value
@@ -770,7 +983,7 @@ window.onresize = function() {
 
 resized()
 
-function createNewTable(){
+function createNewTable(clear = false){
     var levelTable = document.getElementById('level')
     levelTable.innerHTML = ""
     for (let i=0; i < 9; i++) {
@@ -817,10 +1030,12 @@ function createNewTable(){
                     catch{}
                   }
 
-                object.setAttribute('normal', "002")
-                object.setAttribute('color', "002")
-                object.setAttribute('tile', "001")
                 
+                if (!clear){
+                    object.setAttribute('normal', "002")
+                    object.setAttribute('color', "002")
+                }
+                object.setAttribute('tile', "001")  
 
                 layers.forEach(function(layer){
                     let image = document.createElement("img")
@@ -835,15 +1050,17 @@ function createNewTable(){
                 image.src = 'elements/grid.png'
                 image.classList.remove("default")
 
-                if (i === 0){
-                    image = object.querySelector(".candy_entrance")
-                    image.src = elementsFolder + "candy_entrance.png"
-                    object.setAttribute("candy_entrance", "005")
+                if (!clear){
+                    if (i === 0){
+                        image = object.querySelector(".candy_entrance")
+                        image.src = elementsFolder + "candy_entrance.png"
+                        object.setAttribute("candy_entrance", "005")
+                    }
+                    
+                    image = object.querySelector(".normal")
+                    image.src = elementsFolder + elements_ids["002"] + ".png"
+                    image.classList.add("small")
                 }
-                
-                image = object.querySelector(".normal")
-                image.src = elementsFolder + elements_ids["002"] + ".png"
-                image.classList.add("small")
 
                 image = object.querySelector(".selectimg")
                 image.src = elementsFolder + "select.png"

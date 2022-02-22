@@ -83,6 +83,17 @@ table, td, tr {
     border-right-color: transparent;
 }
 
+.navbarflex {
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 33%;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 .selectionimage {
     max-width: 40px;
     max-height: 40px;
@@ -102,17 +113,17 @@ table, td, tr {
 }
 
 .sideselectionright {
-    height: 100%; 
+    height: 95%; 
     width: 20%; 
     position: fixed; 
     z-index: 1; 
-    top: 0; 
+    bottom: 0; 
     right: 0;
     background-color: #454545;
     overflow-x: hidden; 
 }
 
-#exportmenu {
+#exportmenu, #importmenu {
     position: fixed; 
     width: 100vw; 
     height: 100vh; 
@@ -138,11 +149,11 @@ img[src="elements/cake_top_right.png"], img[src="elements/cake_bottom_right.png"
 }
 
 .sideselection {
-    height: 100%; 
+    height: 95%; 
     width: 20%; 
     position: fixed; 
     z-index: 1; 
-    top: 0; 
+    bottom: 0; 
     left: 0;
     background-color: #545454;
     overflow-x: hidden; 
@@ -224,7 +235,7 @@ img[src="elements/cake_top_right.png"], img[src="elements/cake_bottom_right.png"
 .vertical-center {
     margin: 0;
     position: absolute;
-    top: 50%;
+    top: 52%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
   }
@@ -269,6 +280,17 @@ img[src="elements/cake_top_right.png"], img[src="elements/cake_bottom_right.png"
     max-width:58px !important;
     max-height:50px !important;
 }
+
+.navbar {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5%;
+    z-index: 6;
+  }
 
 #level .ingredients_exit {
     position: absolute;
