@@ -848,7 +848,6 @@ function exportLevel(){
 
     level['disablePreLevelBoosters'] = false
     level['colorWeightAdjustments'] = [0]
-    level['frogStomachSize'] = 0
 
     let star1 = document.getElementById("star1").value || 1000
     let star2 = document.getElementById("star2").value || 2000
