@@ -737,6 +737,12 @@ function importLevel(levelData){
         child.remove()
     })
 
+    //Set score targets
+    let scoreTargets = levelData.scoreTargets || []
+    document.getElementById("star1").value = scoreTargets[0] || ''
+    document.getElementById("star2").value = scoreTargets[1] || ''
+    document.getElementById("star3").value = scoreTargets[2] || ''
+
 
     let ingredientOrder = {0: "hazelnut", 1: "cherry"}
     if (wantedMode == "Drop down" || wantedMode == "Order Drop Down"){
@@ -844,7 +850,11 @@ function exportLevel(){
     level['colorWeightAdjustments'] = [0]
     level['frogStomachSize'] = 0
 
-    level['scoreTargets'] = [100,200,300]
+    let star1 = document.getElementById("star1").value || 1000
+    let star2 = document.getElementById("star2").value || 2000
+    let star3 = document.getElementById("star3").value || 3000
+
+    level['scoreTargets'] = [star1, star2, star3]
 
     level['protocolVersion'] = "0.3"
     level['randomSeed'] = 0
