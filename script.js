@@ -737,9 +737,10 @@ function importLevel(levelData){
         child.remove()
     })
 
+
     let ingredientOrder = {0: "hazelnut", 1: "cherry"}
     if (wantedMode == "Drop down" || wantedMode == "Order Drop Down"){
-        levelData.ingredients.forEach(function(quantity, index){
+        (levelData.ingredients || []).forEach(function(quantity, index){
             try{
                 if (quantity == 0){
                     return
@@ -758,7 +759,7 @@ function importLevel(levelData){
         })
     }
     if (wantedMode == "Order" || wantedMode == "Order Drop Down"){
-        levelData._itemsToOrder.forEach(function(itemDict){
+        (levelData._itemsToOrder || {}).forEach(function(itemDict){
             try{
                 let item = itemDict['item']
                 let quantity = itemDict['quantity']
