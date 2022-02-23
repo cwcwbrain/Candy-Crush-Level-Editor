@@ -26,6 +26,10 @@ table, td, tr {
     flex-basis: 100%;
   }
 
+td[candy_entrance = "026"] .candy_cannon {
+    content:url("elements/candy_cannon_invisible.png")
+}
+
 #level {
     transform: scale(var(--scaleWidth, --scaleHeight));
     z-index: 10;
@@ -191,6 +195,7 @@ img[src="elements/cake_top_right.png"], img[src="elements/cake_bottom_right.png"
 
 .selectimg {
     display: none;
+    z-index: 10 !important;
 }
 
 .selected img {
@@ -235,7 +240,7 @@ img[src="elements/cake_top_right.png"], img[src="elements/cake_bottom_right.png"
 .vertical-center {
     margin: 0;
     position: absolute;
-    top: 52%;
+    top: 50%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
   }
@@ -244,24 +249,28 @@ img[src="elements/cake_top_right.png"], img[src="elements/cake_bottom_right.png"
     position: absolute;
     bottom: -100%;
     z-index: 3;
+    pointer-events: none;
 }
 
 #level .wallup {
     position: absolute;
     bottom: 100%;
     z-index: 3;
+    pointer-events: none;
 }
 
 #level .wallleft {
     position: absolute;
     right: 100%;
     z-index: 3;
+    pointer-events: none;
 }
 
 #level .wallright {
     position: absolute;
     right: -120%;
     z-index: 3;
+    pointer-events: none;
 }
 
 #level .stretched {
@@ -298,20 +307,82 @@ img[src="elements/cake_top_right.png"], img[src="elements/cake_bottom_right.png"
     max-height: 32px !important;
     bottom: -120%;
     z-index: 3;
+    pointer-events: none;
+}
+
+#level .ammocontainer {
+    position:absolute;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content:center;
+    justify-content:center;
+
+    left: 5;
+
+    margin: 0;
+    padding: 0;
+    max-width: 64px !important;
+    height: 45px;
+    bottom: 100%;
+}
+
+#level .ammocontainer img:first-child:nth-last-child(n + 2),
+#level .ammocontainer img:first-child:nth-last-child(n + 2) ~ img{
+    max-width: 50%;
+}
+
+#level .ammocontainer img:first-child:nth-last-child(n + 3),
+#level .ammocontainer img:first-child:nth-last-child(n + 3) ~ img{
+    max-width: 33%;
+}
+
+#level .ammocontainer img:first-child:nth-last-child(n + 7),
+#level .ammocontainer img:first-child:nth-last-child(n + 7) ~ img{
+    max-width: 25%;
+}
+
+#level .ammocontainer img:first-child:nth-last-child(n + 13),
+#level .ammocontainer img:first-child:nth-last-child(n + 13) ~ img{
+    max-width: 20%;
+}
+
+#level .ammocontainer img {
+    max-width: 60%;
+
+    margin: 0;
+    padding: 0;
+    z-index: 11;
+
+    flex-shrink: 1;
+    flex-grow: 0;
+    flex-basis: auto;
+
+    position: static
+}
+
+#level .candy_cannon {
+    position: absolute;
+    bottom: 170%;
+    z-index: 3;
+    pointer-events: none;
 }
 
 #level .candy_entrance {
     position: absolute;
-    max-width: 32px !important;
-    max-height: 32px !important;
-    bottom: 100%;
+    max-width: 28px !important;
+    max-height: 28px !important;
+    bottom: 80%;
     z-index: 3;
+    pointer-events: none;
 }
 
 #level .fence_down {
     position: absolute;
     bottom: -100%;
     z-index: 3;
+    pointer-events: none;
 }
 
 #level .cakebomb {

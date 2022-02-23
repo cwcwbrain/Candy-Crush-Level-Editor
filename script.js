@@ -13,11 +13,13 @@ const wallup = {"086": "wall_up", "164": "licorice_wall_up", "109": "destructibl
 const wallright = {"089": "wall_right", "167": "licorice_wall_right", "112": "destructible_wall_1_right", "116": "destructible_wall_2_right", "120": "destructible_wall_3_right"}
 const wallleft = {"088": "wall_left", "166": "licorice_wall_left", "111": "destructible_wall_1_left", "115": "destructible_wall_2_left", "119": "destructible_wall_3_left"}
 
-const elements_ids = Object.assign({}, colors, walldown, wallup, bonbon, wallright, wallleft, coloredCandy, candy, blockers, tiles, ingredients, sugarCoats, locks, glass, {"010": "ingredients_exit", "005": "candy_entrance"})
+const elements_ids = Object.assign({}, colors, walldown, wallup, bonbon, wallright, wallleft, coloredCandy, candy, blockers, tiles, ingredients, sugarCoats, locks, glass, {"010": "ingredients_exit", "026": "candy_entrance", "005": "candy_cannon"})
 const elements_names = _.invert(elements_ids)
 
 const stretched = ["009", "019", "020", "021", "022", "023", "025", "122", "123", "124", "134", "135", "136", "054", "157", "158", "024", "211", "212", "213", "220", "221", "159", "160", "161", "162", "163", "062"].concat(Object.keys(bonbon))
 const small = [].concat(Object.keys(colors), Object.keys(coloredCandy), ["017", "002", "079", "080", "081", "082", "083", "044", "043", "125", "126"]);
+
+const sugarCoatable = ["044", "017", "079", "080", "081", "082", "083", "125", "126"]
 
 const elementsFolder = "elements/"
 var selectedColor = "002"
@@ -41,6 +43,7 @@ const layers = [
     "wallleft",
     "wallright",
     "ingredients_exit",
+    "candy_cannon",
     "candy_entrance",
     "selectimg"
 ]
@@ -56,7 +59,8 @@ const layerElements = {
     "wallleft": [].concat(Object.keys(wallleft)),
     "wallright": [].concat(Object.keys(wallright)),
     "ingredients_exit": ["010"],
-    "candy_entrance": ["005"]
+    "candy_entrance": ["026"],
+    "candy_cannon": ["005"]
 }
 
 var preferredColors = [0,1,2,3,4]
@@ -382,7 +386,7 @@ function updateTile(object){
         }
     }
     if (elementLayer == "sugarcoat"){
-        if (object.getAttribute("normal") in coloredCandy){
+        if (object.getAttribute("normal") in coloredCandy || sugarCoatable.includes(object.getAttribute("normal"))){
             object.setAttribute(elementLayer, selectedElement)
             image.src = elementsFolder + elements_ids[selectedElement] + ".png"
         }
@@ -543,7 +547,7 @@ function updateTile(object){
         } catch{}
     }
 
-    if (!(object.getAttribute("normal") in coloredCandy)){
+    if (!(object.getAttribute("normal") in coloredCandy) && !(sugarCoatable.includes(object.getAttribute("normal")))){
         object.setAttribute("sugarcoat", "")
         object.querySelector(".sugarcoat").src = elementsFolder + "none.png"
     }
@@ -829,6 +833,11 @@ function exportLevel(){
             }
 
             let totalCode = []
+
+            if (object.getAttribute("candy_entrance") == "026"){
+                totalCode.push("005")
+            }
+
             let toLoopThrough = [].concat(layers, ["color"])
             toLoopThrough.forEach(function(layer){
                 let element = ""
@@ -1002,8 +1011,8 @@ function exportLevelUI(){
 
 function resized(){
     let container = document.getElementById("level")
-    let width = window.innerWidth * .0008
-    let height = window.innerHeight * .0008
+    let width = window.innerWidth * .00078
+    let height = window.innerHeight * .00078
 
     document.documentElement.style.setProperty("--scaleWidth", width)
     document.documentElement.style.setProperty("--scaleHieght", height)
@@ -1069,6 +1078,22 @@ function createNewTable(clear = false){
                 }
                 object.setAttribute('tile', "001")  
 
+                let ammo = object.appendChild(document.createElement("div"))
+                ammo.classList.add("ammocontainer")
+                // if (i == 0){
+                //     let ammoimage
+                //     ammoimage = ammo.appendChild(document.createElement("img"))
+                //     ammoimage.src = "elements/cannon_red.png"
+                //     ammoimage = ammo.appendChild(document.createElement("img"))
+                //     ammoimage.src = "elements/cannon_blue.png"
+                //     ammoimage = ammo.appendChild(document.createElement("img"))
+                //     ammoimage.src = "elements/cannon_green.png"
+                //     ammoimage = ammo.appendChild(document.createElement("img"))
+                //     ammoimage.src = "elements/cannon_yellow.png"
+                //     ammoimage = ammo.appendChild(document.createElement("img"))
+                //     ammoimage.src = "elements/cannon_purple.png"
+                // }
+
                 layers.forEach(function(layer){
                     let image = document.createElement("img")
                     image.setAttribute('draggable', false)
@@ -1086,7 +1111,7 @@ function createNewTable(clear = false){
                     if (i === 0){
                         image = object.querySelector(".candy_entrance")
                         image.src = elementsFolder + "candy_entrance.png"
-                        object.setAttribute("candy_entrance", "005")
+                        object.setAttribute("candy_entrance", "026")
                     }
                     
                     image = object.querySelector(".normal")
