@@ -19,7 +19,7 @@ const elements_names = _.invert(elements_ids)
 const stretched = ["009", "019", "020", "021", "022", "023", "025", "122", "123", "124", "134", "135", "136", "054", "157", "158", "024", "211", "212", "213", "220", "221", "159", "160", "161", "162", "163", "062"].concat(Object.keys(bonbon))
 const small = [].concat(Object.keys(colors), Object.keys(coloredCandy), ["017", "002", "079", "080", "081", "082", "083", "044", "043", "125", "126"]);
 
-const sugarCoatable = ["044", "017", "079", "080", "081", "082", "083", "125", "126"]
+const sugarCoatable = ["044", "017", "079", "080", "081", "082", "083", "125", "126", "043", "061"]
 
 const elementsFolder = "elements/"
 var selectedColor = "002"
