@@ -11,6 +11,10 @@ table, td, tr {
     src: url(fonts/MergePro.otf);
 }
 
+img[src=""] {
+    display: none !important;
+}
+
 #level .tile {
     position: relative;
     top: 0;
@@ -26,8 +30,41 @@ table, td, tr {
     flex-basis: 100%;
   }
 
-td[candy_entrance = "026"] .candy_cannon {
-    content:url("elements/candy_cannon_invisible.png")
+.cannonsettings tr:nth-child(1){
+    width: 19%;
+}
+
+.cannonsettings td{
+    width: 27%;
+}
+
+.cannonsettings td p{
+    font-size: 80%;
+    text-align: center;
+}
+
+td[candy_cannon = '["005"]'][candy_entrance = "026"] .candy_cannon {
+    content:url("elements/candy_cannon_invisible.png") !important;
+    display: block !important;
+}
+
+td[candy_cannon = '["005"]'] .candy_cannon {
+    content:url("elements/candy_cannon_invisible_all.png") !important;
+    display: block !important;
+}
+
+td[candy_cannon = '[]'] .candy_cannon, td[candy_cannon = ""] .candy_cannon {
+    content:url("") !important;
+}
+
+td[candy_cannon = '[]'] .ammocontainer, td[candy_cannon = ""] .ammocontainer {
+    display: none !important;
+}
+
+td .candy_cannon {
+    content:url("elements/candy_cannon.png") !important;
+    display: block !important;
+    pointer-events: none;
 }
 
 #level {
@@ -198,7 +235,7 @@ img[src="elements/cake_top_right.png"], img[src="elements/cake_bottom_right.png"
     z-index: 10 !important;
 }
 
-.selected img {
+.selected .selectimg {
     display: block !important;
 }
 
@@ -248,28 +285,29 @@ img[src="elements/cake_top_right.png"], img[src="elements/cake_bottom_right.png"
 #level .walldown {
     position: absolute;
     bottom: -100%;
-    z-index: 3;
+    z-index: 2;
     pointer-events: none;
 }
 
 #level .wallup {
     position: absolute;
     bottom: 100%;
-    z-index: 3;
+    z-index: 2;
     pointer-events: none;
 }
 
 #level .wallleft {
     position: absolute;
-    right: 100%;
-    z-index: 3;
+    right: 100% !important;
+    left: 0 !important;
+    z-index: 2;
     pointer-events: none;
 }
 
 #level .wallright {
     position: absolute;
-    right: -120%;
-    z-index: 3;
+    right: -100%;
+    z-index: 2;
     pointer-events: none;
 }
 
@@ -318,6 +356,8 @@ img[src="elements/cake_top_right.png"], img[src="elements/cake_bottom_right.png"
     flex-wrap: wrap;
     align-content:center;
     justify-content:center;
+
+    pointer-events: none;
 
     left: 5;
 
@@ -454,8 +494,4 @@ img[src="elements/cake_top_right.png"], img[src="elements/cake_bottom_right.png"
     right: 0;
     text-align: center;
     z-index: 1;
-}
-
-img[src=""] {
-    display: none !important;
 }

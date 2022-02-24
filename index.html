@@ -132,6 +132,55 @@
                     <div id="requirements">
                     </div>
                 </div>
+                <div class="sidetitle">
+                    <p class='MergePro' style="font-weight: bold; color: white; text-align: center;">Candy Cannon:</p>
+                </div>
+                <div class="sideoptions">
+                    <table style="width: 100%;" class="cannonsettings">
+                        <tr>
+                            <td>
+                                <!-- <p class='MergePro' style="font-weight: bold; color: white; text-align: center;">Amount:</p> -->
+                            </td>
+                            <td>
+                                <p class='MergePro' style="font-weight: bold; color: white; text-align: center;">Max:</p>
+                            </td>
+                            <td>
+                                <p class='MergePro' style="font-weight: bold; color: white; text-align: center;">Interval:</p>
+                            </td>
+                            <td>
+                                <p class='MergePro' style="font-weight: bold; color: white; text-align: center;">Tick:</p>
+                            </td>
+                        </tr>
+                        <tr class="cannonpref" elm="fallingIcing" image="elements/cannon_block_waffle.png" tick="Level"></tr>
+                        <tr class="cannonpref" elm="licorice" image="elements/cannon_licorice.png" tick=""></tr>
+                        <tr class="cannonpref" elm="luckyCandy" image="elements/cannon_lucky.png" tick=""></tr>
+                        <tr class="cannonpref" elm="mulockCandy" image="elements/cannon_mulock_key.png" tick=""></tr>
+                        <tr class="cannonpref" elm="pepperCandy" image="elements/cannon_bomb.png" tick="ExplosionTurns"></tr>
+                        <tr class="cannonpref" elm="stripedCandy" image="elements/cannon_striped.png" tick=""></tr>
+                        <tr class="cannonpref" elm="stripedRowCandy" image="elements/cannon_striped_horizontal.png" tick=""></tr>
+                        <tr class="cannonpref" elm="stripedColumnCandy" image="elements/cannon_striped_vertical.png" tick=""></tr>
+                        <tr class="cannonpref" elm="timeCandy" image="elements/cannon_time_candy.png" tick=""></tr>
+                        <tr class="cannonpref" elm="wrappedCandy" image="elements/cannon_wrapped_candy.png" tick=""></tr>
+                        <tr class="cannonpref" elm="colorBomb" image="elements/cannon_colorbomb.png" tick=""></tr>
+                        <tr class="cannonpref" elm="fish" image="elements/cannon_fish.png" tick=""></tr>
+                        <tr class="cannonpref" elm="shield" image="elements/cannon_sugar_coat.png" tick="Level"></tr>
+
+                        <tr>
+                            <td> 
+                                <img class="elmimg" style="max-width: 70%;" src="elements/cannon_ingredient.png"> 
+                            </td> 
+                            <td> 
+                                <input class="max" style="width: 50px; text-align: center;" placeholder="0" type="number" id="maxNumIngredientsOnScreen">
+                             </td> 
+                             <td> 
+                                 <input class="spawn" style="width: 50px; text-align: center;" placeholder="0" type="number" id="ingredientSpawnDensity"> 
+                                </td> 
+                                <td> 
+                                    <!-- <input class="tick" style="width: 50px; text-align: center;" placeholder="0" type="number" id="shieldLevel">  -->
+                                </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
             <div class="sideselection">
@@ -286,13 +335,33 @@
 
                     <button class="dropdown" onclick="toggleDropdown(this)" associd="spawning">
                         <div style="display: flex; justify-content: space-between;">
-                            <p class='MergePro' style="padding-left: 5%; ">Candy Spawning</p>
+                            <p class='MergePro' style="padding-left: 5%; ">Candy Cannon</p>
                             <p class="arrow" style="display: inline; padding-right: 5%; transform: rotate(90deg);">&raquo</p>
                           </div>
                     </button>
                     <div class="dropped" id="spawning" style="display:none">
+                        <div class="selectelement" element="candy_cannon" gamelayer="candy_cannon"></div>
                         <div class="selectelement" element="candy_entrance" gamelayer="candy_entrance"></div>
-                        <!-- <div class="selectelement" element="candy_cannon" gamelayer="candy_cannon"></div> -->
+                        <div class="selectelement" element="cannon_striped_horizontal" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_striped_vertical" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_colorbomb" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_fish" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_sugar_coat" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_blue" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_green" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_orange" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_purple" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_red" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_yellow" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_ingredient" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_licorice" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_bomb" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_mulock_key" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_time_candy" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_lucky" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_striped" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_wrapped_candy" gamelayer="candy_cannon"></div>
+                        <div class="selectelement" element="cannon_block_waffle" gamelayer="candy_cannon"></div>
                     </div>
 
                     <button class="dropdown" onclick="toggleDropdown(this)" associd="ingredients">

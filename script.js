@@ -12,8 +12,9 @@ const walldown = {"087": "wall_down", "165": "licorice_wall_down", "110": "destr
 const wallup = {"086": "wall_up", "164": "licorice_wall_up", "109": "destructible_wall_1_up", "113": "destructible_wall_2_up", "117": "destructible_wall_3_up"}
 const wallright = {"089": "wall_right", "167": "licorice_wall_right", "112": "destructible_wall_1_right", "116": "destructible_wall_2_right", "120": "destructible_wall_3_right"}
 const wallleft = {"088": "wall_left", "166": "licorice_wall_left", "111": "destructible_wall_1_left", "115": "destructible_wall_2_left", "119": "destructible_wall_3_left"}
+const cannons = {"027": "cannon_ingredient", "028": "cannon_licorice", "029": "cannon_bomb", "030": "cannon_mulock_key", "068": "cannon_lucky", "069": "cannon_time_candy", "071": "cannon_striped", "072": "cannon_wrapped_candy", "090": "cannon_block_waffle", "107": "cannon_striped_horizontal", "108": "cannon_striped_vertical", "127": "cannon_colorbomb", "128": "cannon_fish", "137": "cannon_sugar_coat", "214": "cannon_blue", "215": "cannon_green", "216": "cannon_orange", "217": "cannon_purple", "218": "cannon_red", "219": "cannon_yellow"}
 
-const elements_ids = Object.assign({}, colors, walldown, wallup, bonbon, wallright, wallleft, coloredCandy, candy, blockers, tiles, ingredients, sugarCoats, locks, glass, {"010": "ingredients_exit", "026": "candy_entrance", "005": "candy_cannon"})
+const elements_ids = Object.assign({}, colors, cannons, walldown, wallup, bonbon, wallright, wallleft, coloredCandy, candy, blockers, tiles, ingredients, sugarCoats, locks, glass, {"010": "ingredients_exit", "026": "candy_entrance", "005": "candy_cannon"})
 const elements_names = _.invert(elements_ids)
 
 const stretched = ["009", "019", "020", "021", "022", "023", "025", "122", "123", "124", "134", "135", "136", "054", "157", "158", "024", "211", "212", "213", "220", "221", "159", "160", "161", "162", "163", "062"].concat(Object.keys(bonbon))
@@ -27,6 +28,8 @@ var selectedElement = "002"
 var elementLayer = "normal"
 
 const orderItems = {"1": "red", "2": "blue", "3": "yellow", "4": "orange", "5": "purple", "6": "green", "7": "wrapped", "8": "striped", "9": "colorbomb", "10": "striped + striped", "11": "striped + wrapped", "12": "striped + colorbomb", "13": "colorbomb + colorbomb", "14": "wrapped + colorbomb", "15": "wrapped + wrapped", "16": "chocolate", "17": "frosting", "18": "licorice shell", "19": "licorice", "20": "pepper bomb", "21": "jellyfish", "22": "cake bomb", "24": "magic mixer", "25": "waffle", "26": "dark chocolate", "27": "candy cane curl", "28": "crystal candy", "29": "rainbow twist", "30": "frog", "31": "sugar coat", "32": "bubblegum", "33": "licorice curl", "34": "sour skull", "35": "bonbon blitz", "36": "jelly jar", "37": "candy cobra"}
+
+const cannonCodes = [["fallingIcing", "Level"], ["licorice"], ["luckyCandy"], ["mulockCandy"], ["pepperCandy", "ExplosionTurns"], ["stripedCandy"], ["stripedRowCandy"], ["stripedColumnCandy"], ["timeCandy"], ["wrappedCandy"], ["colorBomb"], ["fish"], ["shield", "Level"]]
 
 var currentMode = "Classic moves"
 
@@ -60,7 +63,7 @@ const layerElements = {
     "wallright": [].concat(Object.keys(wallright)),
     "ingredients_exit": ["010"],
     "candy_entrance": ["026"],
-    "candy_cannon": ["005"]
+    "candy_cannon": ["005"].concat(Object.keys(cannons))
 }
 
 var preferredColors = [0,1,2,3,4]
@@ -295,6 +298,8 @@ function updateTile(object){
         return
     }
 
+    let level = document.getElementById("level")
+
     let row = Number(object.getAttribute("pos-row"))
     let column = Number(object.getAttribute("pos-col"))
 
@@ -307,7 +312,6 @@ function updateTile(object){
 
     try{
         if (elementLayer == "wallup"){
-            let level = document.getElementById("level")
             let otherObject = level.children[row - 1].children[column]
             let hasWall = otherObject.getAttribute("walldown")
             if (hasWall !== null && hasWall !== ""){
@@ -316,7 +320,6 @@ function updateTile(object){
             }
         }
         else if (elementLayer == "walldown"){
-            let level = document.getElementById("level")
             let otherObject = level.children[row + 1].children[column]
             let hasWall = otherObject.getAttribute("wallup")
             if (hasWall !== null && hasWall !== ""){
@@ -325,7 +328,6 @@ function updateTile(object){
             }
         }
         else if (elementLayer == "wallleft"){
-            let level = document.getElementById("level")
             let otherObject = level.children[row].children[column - 1]
             let hasWall = otherObject.getAttribute("wallright")
             if (hasWall !== null && hasWall !== ""){
@@ -334,7 +336,6 @@ function updateTile(object){
             }
         }
         else if (elementLayer == "wallright"){
-            let level = document.getElementById("level")
             let otherObject = level.children[row].children[column + 1]
             let hasWall = otherObject.getAttribute("wallleft")
             if (hasWall !== null && hasWall !== ""){
@@ -489,6 +490,66 @@ function updateTile(object){
         image.src = elementsFolder + elements_ids[selectedElement] + ".png"
         object.setAttribute("normal", selectedElement)
         object.setAttribute("color", "")
+    }
+    else if (elementLayer == "candy_cannon" && selectedElement != "005"){
+        let cannonElements = JSON.parse(object.getAttribute("candy_cannon") || '[]')
+
+        if (!cannonElements.includes(selectedElement)){
+            if (!cannonElements.includes("005")){
+
+                cannonElements.push("005")
+            }
+    
+            cannonElements.push(selectedElement)
+
+            object.setAttribute("candy_cannon", JSON.stringify(cannonElements))
+
+            let ammocontainer = object.querySelector(".ammocontainer")
+
+            Array.from(ammocontainer.children).forEach(function(element){
+                if (!cannonElements.includes(element.getAttribute("element"))){
+                    element.remove()
+                }
+            })
+    
+            ammoimage = ammocontainer.appendChild(document.createElement("img"))
+
+            ammoimage.setAttribute("element", selectedElement)
+
+            ammoimage.src = elementsFolder + elements_ids[selectedElement] + ".png"
+        }
+    }
+    else if (selectedElement == "026"){
+        let cannonElements = JSON.parse(object.getAttribute("candy_cannon") || '[]')
+
+        if (!cannonElements.includes("005")){
+
+            cannonElements.push("005")
+        }
+
+        object.setAttribute("candy_cannon", JSON.stringify(cannonElements))
+
+        object.setAttribute(elementLayer, selectedElement)
+        image.src = elementsFolder + elements_ids[selectedElement] + ".png"
+    }
+    else if (selectedElement == "005"){
+        let cannonElements = JSON.parse(object.getAttribute("candy_cannon") || '[]')
+
+        if (!cannonElements.includes("005")){
+
+            cannonElements.push("005")
+        }
+
+        let ammocontainer = object.querySelector(".ammocontainer")
+
+        Array.from(ammocontainer.children).forEach(function(element){
+            if (!cannonElements.includes(element.getAttribute("element"))){
+                element.remove()
+            }
+        })
+
+        object.setAttribute("candy_cannon", JSON.stringify(cannonElements))
+        image.src = elementsFolder + elements_ids[selectedElement] + ".png"
     }
     else if (elementLayer == "normal"){
         image = object.querySelector(".normal")
@@ -794,6 +855,23 @@ function importLevel(levelData){
         })
     }
 
+    //Set cannon preferences
+    cannonCodes.forEach(function(nameArray){
+        let elm = nameArray[0]
+
+        let cannonSettingAddons = ["Max", "Spawn"]
+
+        cannonSettingAddons.push(nameArray[1])
+
+        cannonSettingAddons.forEach(function(setting){
+            let inputElement = document.getElementById(elm + setting)
+            
+            if (inputElement != null){
+                inputElement.value = levelData[elm + setting] || ""
+            }
+        })
+    })
+
     //Set element selection back
     selectedColor = origColor
     elementLayer = origLayer
@@ -832,26 +910,34 @@ function exportLevel(){
                 continue
             }
 
-            let totalCode = []
-
-            if (object.getAttribute("candy_entrance") == "026"){
-                totalCode.push("005")
-            }
+            let totalCode = [].concat(JSON.parse(object.getAttribute("candy_cannon") || '[]'))
 
             let toLoopThrough = [].concat(layers, ["color"])
+
+            toLoopThrough.splice(toLoopThrough.indexOf("candy_cannon"), 1)
+            
             toLoopThrough.forEach(function(layer){
                 let element = ""
                 if (object.hasAttribute(layer)){
                     element = object.getAttribute(layer)
                 }
                 else{
-                    element = ""
+                    return
                 }
 
-                if (!totalCode.includes(element)){
+                if (!totalCode.includes(element) && element != ""){
                     totalCode.push(element)
                 }
             })
+
+            if (object.getAttribute("normal") !== "002" && object.getAttribute("color") == "002"){
+                totalCode.splice(totalCode.indexOf("002"), 1)
+            }
+            
+            if (totalCode.includes("001") && totalCode.length != 1){
+                totalCode.splice(totalCode.indexOf("001"), 1)
+            }
+
             rowArray.push(totalCode.join(""))
         }
         levelArray.push(rowArray)
@@ -859,16 +945,15 @@ function exportLevel(){
 
     let level = {}
     level['tileMap'] = levelArray
-    level['gameModeName'] = "Classic moves"
     level['numberOfColours'] = preferredColors.length
     level['preferredColors'] = preferredColors
 
     level['disablePreLevelBoosters'] = document.getElementById("disablebooster").checked
     level['colorWeightAdjustments'] = [0]
 
-    let star1 = document.getElementById("star1").value || 1000
-    let star2 = document.getElementById("star2").value || 2000
-    let star3 = document.getElementById("star3").value || 3000
+    let star1 = Number(document.getElementById("star1").value) || 1000
+    let star2 = Number(document.getElementById("star2").value) || 2000
+    let star3 = Number(document.getElementById("star3").value) || 3000
 
     level['scoreTargets'] = [star1, star2, star3]
 
@@ -966,39 +1051,23 @@ function exportLevel(){
     level['gameModeName'] = currentMode
 
     level['episodeId'] = 0
-    level['chameleonCandyMax'] = 0
-    level['chameleonCandySpawn'] = 0
-    level['fallingIcingMax'] = 0
-    level['fallingIcingSpawn'] = 0
-    level['fallingIcingLevel'] = 0
-    level['licoriceMax'] = 0
-    level['licoriceSpawn'] = 0
-    level['luckyCandyMax'] = 0
-    level['luckyCandySpawn'] = 0
-    level['mulockCandyMax'] = 0
-    level['mulockCandySpawn'] = 0
-    level['mysteryCandyMax'] = 0
-    level['mysteryCandySpawn'] = 0
-    level['pepperCandyExplosionTurns'] = 0
-    level['pepperCandyMax'] = 0
-    level['pepperCandySpawn'] = 0
-    level['stripedCandyMax'] = 0
-    level['stripedCandySpawn'] = 0
-    level['stripedRowCandyMax'] = 0
-    level['stripedRowCandySpawn'] = 0
-    level['stripedColumnCandyMax'] = 0
-    level['stripedColumnCandySpawn'] = 0
-    level['timeCandyMax'] = 0
-    level['timeCandySpawn'] = 0
-    level['wrappedCandyMax'] = 0
-    level['wrappedCandySpawn'] = 0
-    level['colorBombMax'] = 0
-    level['colorBombSpawn'] = 0
-    level['fishMax'] = 0
-    level['fishSpawn'] = 0
-    level['shieldMax'] = 0
-    level['shieldSpawn'] = 0
-    level['shieldLevel'] = 0
+
+    //Add cannon preferences
+    cannonCodes.forEach(function(nameArray){
+        let elm = nameArray[0]
+
+        let cannonSettingAddons = ["Max", "Spawn"]
+
+        cannonSettingAddons.push(nameArray[1])
+
+        cannonSettingAddons.forEach(function(setting){
+            let inputElement = document.getElementById(elm + setting)
+            
+            if (inputElement != null && inputElement.value != ""){
+                level[elm + setting] = Number(inputElement.value) || 0
+            }
+        })
+    })
 
     return level
 }
@@ -1036,6 +1105,8 @@ function createNewTable(clear = false){
 
                 object.setAttribute("pos-row", i)
                 object.setAttribute("pos-col", g)
+
+                object.setAttribute("candy_cannon", '')
 
                 object.addEventListener('contextmenu', function(ev) {
                     ev.preventDefault()
@@ -1080,19 +1151,6 @@ function createNewTable(clear = false){
 
                 let ammo = object.appendChild(document.createElement("div"))
                 ammo.classList.add("ammocontainer")
-                // if (i == 0){
-                //     let ammoimage
-                //     ammoimage = ammo.appendChild(document.createElement("img"))
-                //     ammoimage.src = "elements/cannon_red.png"
-                //     ammoimage = ammo.appendChild(document.createElement("img"))
-                //     ammoimage.src = "elements/cannon_blue.png"
-                //     ammoimage = ammo.appendChild(document.createElement("img"))
-                //     ammoimage.src = "elements/cannon_green.png"
-                //     ammoimage = ammo.appendChild(document.createElement("img"))
-                //     ammoimage.src = "elements/cannon_yellow.png"
-                //     ammoimage = ammo.appendChild(document.createElement("img"))
-                //     ammoimage.src = "elements/cannon_purple.png"
-                // }
 
                 layers.forEach(function(layer){
                     let image = document.createElement("img")
@@ -1112,6 +1170,7 @@ function createNewTable(clear = false){
                         image = object.querySelector(".candy_entrance")
                         image.src = elementsFolder + "candy_entrance.png"
                         object.setAttribute("candy_entrance", "026")
+                        object.setAttribute("candy_cannon", '["005"]')
                     }
                     
                     image = object.querySelector(".normal")
@@ -1172,12 +1231,40 @@ document.querySelectorAll(".selectelement").forEach(function(element){
     let parent = element.parentElement
 
     let button = document.createElement('button')
+    let layer = element.getAttribute("gamelayer")
+
+    if (layer == "candy_cannon" && element.getAttribute('element') != "candy_cannon"){
+        let ammoImage = button.appendChild(document.createElement("img"))
+        ammoImage.setAttribute("style", "max-width: 40px; position: absolute; height: 40px; pointer-events: none;")
+        ammoImage.src = elementsFolder + "/ammo.png"
+    }
+
     let image = button.appendChild(document.createElement("img"))
     image.classList.add("selectionimage")
     image.src = elementsFolder + elementName + ".png"
 
-    button.setAttribute("onclick", "updateSelection(this, \"" + elementName + "\", '" + element.getAttribute("gamelayer") + "')")
+
+    button.setAttribute("onclick", "updateSelection(this, \"" + elementName + "\", '" + layer + "')")
 
     element.remove()
     parent.appendChild(button)
+})
+
+//Auto set up cannon preference elements
+document.querySelectorAll(".cannonpref").forEach(function(element){
+    let elm = element.getAttribute("elm")
+    let imageSrc = element.getAttribute("image")
+    let tick = element.getAttribute("tick")
+
+    element.innerHTML = '<td> <img class="elmimg" style="max-width: 70%;"> </td> <td> <input class="max" style="width: 50px; text-align: center;" placeholder="0" type="number"> </td> <td> <input class="spawn" style="width: 50px; text-align: center;" placeholder="0" type="number"> </td> <td> <input class="tick" style="width: 50px; text-align: center;" placeholder="0" type="number"> </td>'
+
+    element.querySelector(".elmimg").src = imageSrc
+    element.querySelector(".max").id = elm + "Max"
+    element.querySelector(".spawn").id = elm + "Spawn"
+    if (tick != ""){
+        element.querySelector(".tick").id = elm + tick
+    }
+    else{
+        element.querySelector(".tick").style.display = "none"
+    }
 })
