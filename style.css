@@ -164,7 +164,7 @@ td .candy_cannon {
     overflow-x: hidden; 
 }
 
-#exportmenu, #importmenu {
+#exportmenu, #importmenu, #creditsmenu {
     position: fixed; 
     width: 100vw; 
     height: 100vh; 
