@@ -1052,6 +1052,10 @@ function exportLevel(){
 
     level['episodeId'] = 0
 
+    level["evilSpawnerAmount"] = 2
+    level["evilSpawnerElements"] = [4]
+    level["evilSpawnerInterval"] = 3
+
     //Add cannon preferences
     cannonCodes.forEach(function(nameArray){
         let elm = nameArray[0]
