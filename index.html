@@ -8,8 +8,8 @@
         <link href="style.css" rel="stylesheet" type="text/css" />
         <script src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
         
-        <meta content="Web Candy Crush Level Editor" property="og:title">
-        <meta content="Level editor for candy crush that can be used to export levels in your browser" property="og:description">
+        <meta content="Candy Crush Saga Level Editor" property="og:title">
+        <meta content="Level editor for Candy Crush Saga that can be used to export YOUR levels into your Windows 11 app" property="og:description">
         <meta content="Candy Crush Level Editor" property="og:site_name">
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta http-equiv="Pragma" content="no-cache" />
@@ -24,11 +24,12 @@
         <div id="main">
             <div class="navbar">
                 <div style="display: flex; height: 100%;">
-                    </div>
                     <div class="navbarflex">
                     </div>
                     <div class="navbarflex">
-                        <button style="margin: auto; display: block;" onclick="exportLevelUI()">⏏ Export Level</button>
+                    </div>
+                    <div class="navbarflex">
+                        <button style="margin: auto; display: block;" onclick="exportLevelUI()">Export Level</button>
                         <button style="margin: auto; display: block;" onclick="displayImportLevelUI()"><small>⤵</small> Import Level</button>
                     </div>
                 </div>
@@ -80,19 +81,19 @@
                 </div>
                 <div class="sideoptions" id="colorspref-section">
                     <p class='DroidSans break' style="margin: auto; display: block; color: white; text-align: center;">Preferred Colors:</p>
-                    <button value="0" class="preferred preferredselected" onclick="togglePreferred(this)">
+                    <button value="0" class="preferred" onclick="togglePreferred(this)">
                         <img class="selectionimage" src="elements/blue.png">
                     </button>
-                    <button value="1" class="preferred preferredselected" onclick="togglePreferred(this)">
+                    <button value="1" class="preferred" onclick="togglePreferred(this)">
                         <img class="selectionimage" src="elements/green.png">
                     </button>
-                    <button value="2" class="preferred preferredselected" onclick="togglePreferred(this)">
+                    <button value="2" class="preferred" onclick="togglePreferred(this)">
                         <img class="selectionimage" src="elements/orange.png">
                     </button>
-                    <button value="3" class="preferred preferredselected" onclick="togglePreferred(this)">
+                    <button value="3" class="preferred" onclick="togglePreferred(this)">
                         <img class="selectionimage" src="elements/purple.png">
                     </button>
-                    <button value="4" class="preferred preferredselected" onclick="togglePreferred(this)">
+                    <button value="4" class="preferred" onclick="togglePreferred(this)">
                         <img class="selectionimage" src="elements/red.png">
                     </button>
                     <button value="5" class="preferred" onclick="togglePreferred(this)">
@@ -225,8 +226,8 @@
                         <div class="selectelement" element="bomb", gamelayer="normal"></div>
                         <div class="selectelement" element="coconut_wheel", gamelayer="normal"></div>
                         <div class="selectelement" element="ufo", gamelayer="normal"></div>
-                        <div class="selectelement" element="bobber", gamelayer="normal"></div>
-                        <div class="selectelement" element="cake_bomb" gamelayer="normal"></div>
+                         <div class="selectelement" element="jelly" gamelayer="normal"></div>
+                        <div class="selectelement" element="jelly2" gamelayer="normal"></div>
                     </div>
 
                     <button class="dropdown" onclick="toggleDropdown(this)" associd="frogss">
@@ -254,8 +255,6 @@
                             <img class="selectionimage" src="elements/empty_UI.png">
                         </button>
                         <div class="selectelement" element="grid" gamelayer="tile"></div>
-                        <div class="selectelement" element="jelly" gamelayer="tile"></div>
-                        <div class="selectelement" element="jelly2" gamelayer="tile"></div>
                         <div class="selectelement" element="blue_tile" gamelayer="tile"></div>
                         <div class="selectelement" element="black_tile" gamelayer="tile"></div>
                     </div>
@@ -300,6 +299,8 @@
                         <div class="selectelement" element="jelly_jar_1" gamelayer="normal"></div>
                         <div class="selectelement" element="jelly_jar_2" gamelayer="normal"></div>
                         <div class="selectelement" element="jelly_jar_2" gamelayer="normal"></div>
+                        <div class="selectelement" element="bobber", gamelayer="normal"></div>
+                        <div class="selectelement" element="cake_bomb" gamelayer="normal"></div>
                         <div class="selectelement" element="gumball" gamelayer="normal></div>
 
                     <button class="dropdown" onclick="toggleDropdown(this)" associd="locks">
