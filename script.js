@@ -8,10 +8,10 @@ const blockers = {"053": "chocolate_frog", "009": "chocolate", "017": "licorice_
 const bonbon = {"182": "bonbon_colorbomb_1", "183": "bonbon_colorbomb_2", "184": "bonbon_colorbomb_3", "185": "bonbon_colorbomb_4", "186": "bonbon_horizontal_1", "187": 'bonbon_horizontal_2', "188": "bonbon_horizontal_3", "189": "bonbon_horizontal_4", "190": "bonbon_vertical_1", "191": "bonbon_vertical_2", "192": "bonbon_vertical_3", "193": "bonbon_vertical_4", "194": "bonbon_fish_1", "195": "bonbon_fish_2", "196": "bonbon_fish_3", "197": "bonbon_fish_4", "198": "bonbon_wrapped_1", "199": "bonbon_wrapped_2", "200": "bonbon_wrapped_3", "201": "bonbon_wrapped_4"}
 const tiles = {"empty": "empty", "000": "none", "001": "grid", "003": "jelly", "004": "jelly2", "064": "blue_tile", "065": "black_tile"}
 const ingredients = {"125": "cherry", "126": "hazelnut"}
-const walldown = {"087": "wall_down", "165": "licorice_wall_down", "110": "destructible_wall_1_down", "114": "destructible_wall_2_down", "118": "destructible_wall_3_down"}
-const wallup = {"086": "wall_up", "164": "licorice_wall_up", "109": "destructible_wall_1_up", "113": "destructible_wall_2_up", "117": "destructible_wall_3_up"}
-const wallright = {"089": "wall_right", "167": "licorice_wall_right", "112": "destructible_wall_1_right", "116": "destructible_wall_2_right", "120": "destructible_wall_3_right"}
-const wallleft = {"088": "wall_left", "166": "licorice_wall_left", "111": "destructible_wall_1_left", "115": "destructible_wall_2_left", "119": "destructible_wall_3_left"}
+const walldown = {"087": "wall_down", "165": "licorice_wall_down", "110": "destructible_wall_1_down", "114": "destructible_wall_2_down", "118": "destructible_wall_3_down", "169": "destructible_licorice_wall_1_down", "173": "destructible_licorice_wall_2_down", "177": "destructible_licorice_wall_3_down",}
+const wallup = {"086": "wall_up", "164": "licorice_wall_up", "109": "destructible_wall_1_up", "113": "destructible_wall_2_up", "117": "destructible_wall_3_up", "168": "destructible_licorice_wall_1_up", "172": "destructible_licorice_wall_2_up", "176": "destructible_licorice_wall_3_up"}
+const wallright = {"089": "wall_right", "167": "licorice_wall_right", "112": "destructible_wall_1_right", "116": "destructible_wall_2_right", "120": "destructible_wall_3_right", "171": "destructible_licorice_wall_1_right", "175": "destructible_licorice_wall_2_right", "179": "destructible_licorice_wall_3_right"}
+const wallleft = {"088": "wall_left", "166": "licorice_wall_left", "111": "destructible_wall_1_left", "115": "destructible_wall_2_left", "119": "destructible_wall_3_left", "170": "destructible_licorice_wall_1_left", "174": "destructible_licorice_wall_2_left", "178": "destructible_licorice_wall_3_left"}
 const cannons = {"027": "cannon_ingredient", "028": "cannon_licorice", "029": "cannon_bomb", "030": "cannon_mulock_key", "068": "cannon_lucky", "069": "cannon_time_candy", "071": "cannon_striped", "072": "cannon_wrapped_candy", "090": "cannon_block_waffle", "107": "cannon_striped_horizontal", "108": "cannon_striped_vertical", "127": "cannon_colorbomb", "128": "cannon_fish", "137": "cannon_sugar_coat", "214": "cannon_blue", "215": "cannon_green", "216": "cannon_orange", "217": "cannon_purple", "218": "cannon_red", "219": "cannon_yellow"}
 
 const elements_ids = Object.assign({}, colors, cannons, walldown, wallup, bonbon, wallright, wallleft, coloredCandy, candy, blockers, tiles, ingredients, sugarCoats, locks, glass, {"010": "ingredients_exit", "026": "candy_entrance", "005": "candy_cannon"})
@@ -27,7 +27,7 @@ var selectedColor = "002"
 var selectedElement = "002"
 var elementLayer = "normal"
 
-const orderItems = {"1": "red", "2": "blue", "3": "yellow", "4": "orange", "5": "purple", "6": "green", "7": "wrapped", "8": "striped", "9": "colorbomb", "10": "striped + striped", "11": "striped + wrapped", "12": "striped + colorbomb", "13": "colorbomb + colorbomb", "14": "wrapped + colorbomb", "15": "wrapped + wrapped", "16": "chocolate", "17": "frosting", "18": "licorice shell", "19": "licorice", "20": "pepper bomb", "21": "jellyfish", "22": "cake bomb", "24": "magic mixer", "25": "waffle", "26": "dark chocolate", "27": "candy cane curl", "28": "crystal candy", "29": "rainbow twist", "30": "frog", "31": "sugar coat", "32": "bubblegum", "33": "licorice curl", "34": "sour skull", "35": "bonbon blitz", "36": "jelly jar", "37": "candy cobra"}
+const orderItems = {"1": "red", "2": "blue", "3": "yellow", "4": "orange", "5": "purple", "6": "green", "7": "wrapped", "8": "striped", "9": "colorbomb", "10": "striped + striped", "11": "striped + wrapped", "12": "striped + colorbomb", "13": "colorbomb + colorbomb", "14": "wrapped + colorbomb", "15": "wrapped + wrapped", "16": "chocolate", "17": "frosting", "18": "licorice shell", "19": "licorice", "20": "pepper bomb", "21": "jellyfish", "22": "cake bomb", "24": "magic mixer", "25": "waffle", "26": "dark chocolate", "27": "candy cane curl", "28": "crystal candy", "29": "rainbow twist", "30": "frog", "31": "sugar coat", "32": "bubblegum", "33": "licorice curl", "34": "sour skull", "35": "bonbon blitz", "36": "jelly jar", "37": "candy cobra", "38": "wonderful wrappers", "39": "gumballs"}
 
 const cannonCodes = [["fallingIcing", "Level"], ["licorice"], ["luckyCandy"], ["mulockCandy"], ["pepperCandy", "ExplosionTurns"], ["stripedCandy"], ["stripedRowCandy"], ["stripedColumnCandy"], ["timeCandy"], ["wrappedCandy"], ["colorBomb"], ["fish"], ["shield", "Level"]]
 
@@ -66,7 +66,7 @@ const layerElements = {
     "candy_cannon": ["005"].concat(Object.keys(cannons))
 }
 
-var preferredColors = [0,1,2,3,4]
+var preferredColors = [0,1,2,3,4,5]
 
 var isDown = false
 
